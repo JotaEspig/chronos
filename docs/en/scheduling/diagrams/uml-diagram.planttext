@@ -1,0 +1,36 @@
+@startuml
+!theme vibrant
+
+skin rose
+
+title Agendamento - Diagram
+hide struct methods
+
+struct Day {
+  +uint_PK id
+  +date date
+}
+
+struct SchedulesDay {
+  +uint_FK day_id
+  +uint_FK schedule_id
+}
+
+struct Schedule {
+  +uint_PK id
+  +date start
+  +date end
+  +uint_FK employee_id
+}
+
+struct Employee {
+  +uint_PK id
+  +string name
+}
+
+' =-=-= Relantionships =-=-=
+Day          "1" --{ "0,n"  SchedulesDay
+SchedulesDay "0,n" }-- "1"  Schedule
+Schedule     "0,n" }-- "1"  Employee
+
+@enduml
