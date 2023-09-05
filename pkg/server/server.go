@@ -17,8 +17,9 @@ func NewServer(port int) *Server {
 	s := &Server{}
 
 	if port <= 0 {
-		panic("PORT is a invalid number (port <= 0)")
+		panic("CHRONOS_PORT is a invalid number (port <= 0)")
 	}
+	s.port = port
 
 	e := echo.New()
 	s.echo = e

@@ -7,13 +7,10 @@ import (
 )
 
 func main() {
-	// go to root dir
-	os.Chdir("..")
-
-	portStr := os.Getenv("PORT")
+	portStr := os.Getenv("CHRONOS_PORT")
 	port, ok := strconv.Atoi(portStr)
 	if ok != nil {
-		panic("PORT is not set")
+		panic("CHRONOS_PORT is not set")
 	}
 
 	s := server.NewServer(port)
