@@ -27,7 +27,9 @@ func NewServer(port int) *Server {
 	s.echo.Use(middleware.Recover())
 	s.echo.Use(middleware.Logger())
 	s.echo.Use(middleware.CORS())
+
 	s.setStaticRoutes()
+	s.setRoutes()
 
 	return s
 }
@@ -35,5 +37,6 @@ func NewServer(port int) *Server {
 // Start starts the server using ´port´
 func (s *Server) Start() {
 	addr := fmt.Sprintf(":%d", s.port)
-	s.echo.Logger.Fatal(s.echo.Start(addr))
+	err := s.echo.Start(addr)
+	s.echo.Logger.Fatal(err)
 }
