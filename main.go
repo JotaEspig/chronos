@@ -4,9 +4,13 @@ import (
 	"chronos/pkg/server"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load(".env")
+
 	portStr := os.Getenv("CHRONOS_PORT")
 	port, ok := strconv.Atoi(portStr)
 	if ok != nil {
