@@ -23,23 +23,19 @@ var staticRoutes []staticRoute = []staticRoute{
 
 // setStaticRoutes sets the static routes using staticRoutes variable
 func (s *Server) setStaticRoutes() {
-	for _, elem := range staticRoutes {
-		s.echo.Static(elem.path, elem.root)
-	}
-}
-
-// init formats the root field from staticRoutes using CHRONOS_ROOT_DIR
-// because this way allow the admin to choose where the application files
-// are located, so the chronos binary file (executable file) can be located
-// in "/bin" and the application files in "/var" for example
-func init() {
 	chronosRootDir := os.Getenv("CHRONOS_ROOT_DIR")
 	if chronosRootDir == "" {
 		panic("CHRONOS_ROOT_DIR is not set")
 	}
 
-	// format the root field
+	// format the root field from staticRoutes using CHRONOS_ROOT_DIR
+	// because this way allow the admin to choose where the application files
+	// are located, so the chronos binary file (executable file) can be located
+	// in "/bin" and the application files in "/var" for example
 	for idx, elem := range staticRoutes {
 		staticRoutes[idx].root = fmt.Sprintf(elem.root, chronosRootDir)
+		elem = staticRoutes[idx]
+
+		s.echo.Static(elem.path, elem.root)
 	}
 }
