@@ -13,6 +13,6 @@ CHRONOS_PORT=8080 CHRONOS_ROOT_DIR=. go run main.go
 ```
 With .env file:
 ```
-echo -e "CHRONOS_PORT=8080\nCHRONOS_ROOT_DIR=."
+echo -e "CHRONOS_PORT=8080\nCHRONOS_ROOT_DIR=." > .env
 go run main.go
 ```
