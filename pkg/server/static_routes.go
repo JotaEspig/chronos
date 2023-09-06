@@ -12,6 +12,8 @@ import (
 // end of this file
 var staticRoutes []types.StaticRoute = []types.StaticRoute{
 	{Path: "/", Root: "%s/html"},
+	{Path: "/css", Root: "%s/css"},
+	{Path: "/js", Root: "%s/js"},
 }
 
 // setStaticRoutes sets the static routes using staticRoutes variable
