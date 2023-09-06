@@ -6,31 +6,37 @@ skin rose
 title Agendamento - Diagram
 hide struct methods
 
-struct Day {
+struct User {
   +uint_PK id
-  +date date
-}
-
-struct SchedulesDay {
-  +uint_FK day_id
-  +uint_FK schedule_id
-}
-
-struct Schedule {
-  +uint_PK id
-  +date start
-  +date end
-  +uint_FK employee_id
+  +string username
 }
 
 struct Employee {
   +uint_PK id
-  +string name
+  +flag employee_type
+  +uint_FK user_id
+}
+
+struct Atendimento {
+  +uint_PK id
+  +date start
+  +date end
+  +uint_FK user_id
+  +uint_FK horario_id
+}
+
+struct Horario {
+  +uint_PK id
+  +date start
+  +date end
+  +flag repeat
+  +uint_FK employee_id
 }
 
 ' =-=-= Relantionships =-=-=
-Day          "1" --{ "0,n"  SchedulesDay
-SchedulesDay "0,n" }-- "1"  Schedule
-Schedule     "0,n" }-- "1"  Employee
+User "1" -- "1" Employee
+Horario   "0,n" }-- "1"  Employee
+Atendimento "0,n" }-- "1" Horario
+Atendimento "0,n" }-- "1" User
 
 @enduml
