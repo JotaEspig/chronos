@@ -17,15 +17,15 @@ struct Employee {
   +uint_FK user_id
 }
 
-struct Atendimento {
+struct Scheduling {
   +uint_PK id
   +date start
   +date end
   +uint_FK user_id
-  +uint_FK horario_id
+  +uint_FK time_id
 }
 
-struct Horario {
+struct Time {
   +uint_PK id
   +date start
   +date end
@@ -34,9 +34,9 @@ struct Horario {
 }
 
 ' =-=-= Relantionships =-=-=
-User "1" -- "1" Employee
-Horario   "0,n" }-- "1"  Employee
-Atendimento "0,n" }-- "1" Horario
-Atendimento "0,n" }-- "1" User
+User        "1" -- "1" Employee
+Time        "0,n" }-- "1"  Employee
+Scheduling  "0,n" }-- "1" Time
+Scheduling  "0,n" }-- "1" User
 
 @enduml
