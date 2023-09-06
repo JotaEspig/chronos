@@ -1,6 +1,7 @@
 package main
 
 import (
+	//"chronos/config"
 	"chronos/pkg/server"
 	"os"
 	"strconv"
@@ -9,6 +10,19 @@ import (
 )
 
 func main() {
+	/*
+		defer config.DB.Close()
+
+		db := config.DB
+		stmt, err := db.Prepare("INSERT INTO test(id) VALUES (?);")
+		if err != nil {
+			panic(err)
+		}
+		defer stmt.Close()
+		stmt.Exec("-- DROP TABLE test; --")
+
+		os.Exit(0)
+	*/
 	godotenv.Load(".env")
 
 	portStr := os.Getenv("CHRONOS_PORT")
