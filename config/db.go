@@ -2,20 +2,23 @@ package config
 
 import (
 	"database/sql"
+	"errors"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
 
-func initDB() {
+func InitDB() {
 	var err error
-	DB, err = sql.Open("sqlite3", "./db.db")
+	dbString := os.Getenv("CHRONOS_DB_STRING")
+	if dbString == "" {
+		panic(errors.New("CHRONOS_DB_STRING is not set"))
+	}
+
+	DB, err = sql.Open("sqlite3", dbString)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func init() {
-	initDB()
 }
