@@ -29,6 +29,7 @@ func TestCreateUser(t *testing.T) {
 	var id uint
 	var username string
 
+	// Check if it was created
 	tx.QueryRow("SELECT \"id\", \"username\" FROM \"user\";").Scan(&id, &username)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, newUser.ID, id)
@@ -42,7 +43,7 @@ func TestFindUserByID(t *testing.T) {
 
 	cleanDB(tx)
 
-	// Inserts a user in the database
+	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
 	assert.Equal(t, nil, err)
 
