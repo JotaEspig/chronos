@@ -73,3 +73,29 @@ func TestFindUserByUsername(t *testing.T) {
 	assert.Equal(t, uint(1), u.ID)
 	assert.Equal(t, "test", u.Username)
 }
+
+func TestDeleteUserByID(t *testing.T) {
+	tx, err := config.DB.Begin()
+	assert.Equal(t, nil, err)
+	defer tx.Rollback()
+
+	cleanDB(tx)
+
+	// Insert a user in the database
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	assert.Equal(t, nil, err)
+
+	// Fetch the user that was just created
+	var id uint
+	tx.QueryRow("SELECT \"id\" FROM \"user\";").Scan(&id)
+	assert.NotEqual(t, uint(0), id)
+
+	// Try to delete the user
+	err = user.DeleteUserById(tx, id)
+	assert.Equal(t, nil, err)
+
+	// Check if the user still exists (it should not)
+	id = 0
+	tx.QueryRow("SELECT \"id\" FROM \"user\";").Scan(&id)
+	assert.Equal(t, uint(0), id)
+}
