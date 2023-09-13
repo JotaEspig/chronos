@@ -1,4 +1,3 @@
-// package employee provides support for operations with Employee model
 package employee
 
 import "database/sql"
