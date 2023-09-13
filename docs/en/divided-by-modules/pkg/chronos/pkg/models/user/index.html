@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>user - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../lib/godoc/style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../../../../lib/godoc/jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.18.1";</script>
+<script src="../../../../../lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:6060/pkg/">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:6060/pkg/">GoDoc</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:6060/search">
+<div id="menu">
+
+<span class="search-box"><input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required><button type="submit"><span><!-- magnifying glass: --><svg width="24" height="24" viewBox="0 0 24 24"><title>submit search</title><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg></span></button></span>
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package user
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "chronos/pkg/models/user"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+package user provides support for operations with User model
+</p>
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="index.html#CreateUser">func CreateUser(tx *sql.Tx, user *User) error</a></dd>
+			
+				
+				<dd><a href="index.html#DeleteUserById">func DeleteUserById(tx *sql.Tx, id uint) error</a></dd>
+			
+				
+				<dd><a href="index.html#UpdateUser">func UpdateUser(tx *sql.Tx, u *User) error</a></dd>
+			
+			
+				
+				<dd><a href="index.html#User">type User</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#FindUserByID">func FindUserByID(tx *sql.Tx, id uint) (*User, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#FindUserByUsername">func FindUserByUsername(tx *sql.Tx, username string) (*User, error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#User.ToMap">func (u *User) ToMap() map[string]interface{}</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h3>Package files</h3>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:6060/src/chronos/pkg/models/user/user.go">user.go</a>
+			
+				<a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go">user_dao.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="CreateUser">func <a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go?s=496:541#L5">CreateUser</a>
+				<a class="permalink" href="index.html#CreateUser">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func CreateUser(tx *<a href="http://localhost:6060/pkg/database/sql/">sql</a>.<a href="http://localhost:6060/pkg/database/sql/#Tx">Tx</a>, user *<a href="index.html#User">User</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+			<p>
+CreateUser creates a user in the database
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="DeleteUserById">func <a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go?s=1624:1670#L59">DeleteUserById</a>
+				<a class="permalink" href="index.html#DeleteUserById">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DeleteUserById(tx *<a href="http://localhost:6060/pkg/database/sql/">sql</a>.<a href="http://localhost:6060/pkg/database/sql/#Tx">Tx</a>, id <a href="http://localhost:6060/pkg/builtin/#uint">uint</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+			<p>
+DeleteUserById deletes a user in the database by its ID
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="UpdateUser">func <a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go?s=1387:1429#L48">UpdateUser</a>
+				<a class="permalink" href="index.html#UpdateUser">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func UpdateUser(tx *<a href="http://localhost:6060/pkg/database/sql/">sql</a>.<a href="http://localhost:6060/pkg/database/sql/#Tx">Tx</a>, u *<a href="index.html#User">User</a>) <a href="http://localhost:6060/pkg/builtin/#error">error</a></pre>
+			<p>
+UpdateUser updates a user in the database
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="User">type <a href="http://localhost:6060/src/chronos/pkg/models/user/user.go?s=78:130#L1">User</a>
+				<a class="permalink" href="index.html#User">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type User struct {
+<span id="User.ID"></span>    ID       <a href="http://localhost:6060/pkg/builtin/#uint">uint</a>
+<span id="User.Username"></span>    Username <a href="http://localhost:6060/pkg/builtin/#string">string</a>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="FindUserByID">func <a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go?s=853:906#L26">FindUserByID</a>
+					<a class="permalink" href="index.html#FindUserByID">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func FindUserByID(tx *<a href="http://localhost:6060/pkg/database/sql/">sql</a>.<a href="http://localhost:6060/pkg/database/sql/#Tx">Tx</a>, id <a href="http://localhost:6060/pkg/builtin/#uint">uint</a>) (*<a href="index.html#User">User</a>, <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindUserByID retrieves a user from the database by its ID
+</p>
+
+				
+				
+			
+				
+				<h3 id="FindUserByUsername">func <a href="http://localhost:6060/src/chronos/pkg/models/user/user_dao.go?s=1121:1188#L37">FindUserByUsername</a>
+					<a class="permalink" href="index.html#FindUserByUsername">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func FindUserByUsername(tx *<a href="http://localhost:6060/pkg/database/sql/">sql</a>.<a href="http://localhost:6060/pkg/database/sql/#Tx">Tx</a>, username <a href="http://localhost:6060/pkg/builtin/#string">string</a>) (*<a href="index.html#User">User</a>, <a href="http://localhost:6060/pkg/builtin/#error">error</a>)</pre>
+				<p>
+FindUserByUsername retrieves a user from the database by its username
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="User.ToMap">func (*User) <a href="http://localhost:6060/src/chronos/pkg/models/user/user.go?s=132:177#L1">ToMap</a>
+					<a class="permalink" href="index.html#User.ToMap">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (u *<a href="index.html#User">User</a>) ToMap() map[<a href="http://localhost:6060/pkg/builtin/#string">string</a>]interface{}</pre>
+				
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.18.1.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:6060/LICENSE">BSD license</a>.<br>
+<a href="https://golang.org/doc/tos.html">Terms of Service</a> |
+<a href="https://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

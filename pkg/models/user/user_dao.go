@@ -1,4 +1,3 @@
-// package user provides support for operations with User model
 package user
 
 import "database/sql"
