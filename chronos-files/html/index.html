@@ -5,10 +5,188 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/css/style.css">
-        <script src="/js/a.js">
-        </script>
+        <style>
+            :root {
+                --green: #309f41;
+                --red: #cf171f;
+            }
+            body {
+                display: grid;
+            }
+            .header {
+                grid-column: 1 / span 3;
+                grid-row 1;
+            }
+            .time {
+                grid-column: 1;
+                grid-row: 2;
+
+            }
+
+            .hour {
+                padding: 1rem 0;
+            }
+
+            .schedule {
+                grid-column: 2 / span 3;
+                grid-row: 2;
+                display: grid;
+                grid-template-columns: auto auto auto auto auto;
+            }
+
+            .schedule-week {
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: 10% 90%;
+            }
+
+            .schedules {
+                display: flex;
+                flex-flow: column wrap;
+                justify-content: space-between;
+            }
+
+
+            .schedule hr {
+                width: 100%;
+            }
+
+
+
+            .week-selction {
+                display: flex;
+                flex-flow: row nowrap;
+                grid-column: 1 / span 3;
+                grid-row: 3;
+            }
+
+            .week-option {
+                background-color: gray;
+                border-radius: 2000px;
+                margin: 0 4rem;
+                height: 15px;
+                width: 15px;
+            }
+
+            .current-week {
+                background-color: var(--green);
+            }
+
+        </style>
     </head>
     <body>
-        <h1 style="color: red">Teste</h1>
+        <div class="header">
+            <img src="/img/logoif.png" width="50px" height="50px">
+        </div>
+        <div class="time">
+            <div class="hour" style="color: white" >-</div>
+            <div class="hour">9h</div>
+            <div class="hour">10h</div>
+            <div class="hour">11h</div>
+            <div class="hour">12h</div>
+            <div class="hour">13h</div>
+            <div class="hour">14h</div>
+            <div class="hour">15h</div>
+            <div class="hour">16h</div>
+            <div class="hour">17h</div>
+            <div class="hour">18h</div>
+            <div class="hour">19h</div>
+            <div class="hour">20h</div>
+        </div>
+        <div class="schedule">
+           <div class="schedule-week">
+            <div class="week-name">seg</div>
+            <div class="schedules">
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+            </div>
+           </div>
+           <div class="schedule-week">
+            <div class="week-name">ter</div>
+            <div class="schedules">
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+            </div>
+            </div>
+           <div class="schedule-week">
+            <div class="week-name">qua</div>
+            <div class="schedules">
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+            </div>
+           </div>
+           <div class="schedule-week">
+            <div class="week-name">qui</div>
+            <div class="schedules">
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+            </div>
+           </div>
+           <div class="schedule-week">
+            <div class="week-name">sex</div>
+            <div class="schedules">
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+                <hr>
+            </div>
+           </div>
+        </div>
+        <div class="week-selction">
+            <div class="week-option current-week"></div>
+            <div class="week-option"></div>
+            <div class="week-option"></div>
+            <div class="week-option"></div>
+            <div class="week-option"></div>
+        </div>
+
     </body>
 </html>
