@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 CREATE TABLE IF NOT EXISTS "employee" (
     "id" INTEGER NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
 
     PRIMARY KEY("id"),
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS "time" (
     "id" INTEGER NOT NULL,
     "start" TEXT NOT NULL,
     "end" TEXT NOT NULL,
-    "repeat" TEXT NOT NULL,
+    "repeat" INTEGER NOT NULL,
     "employee_id" INTEGER NOT NULL,
 
     PRIMARY KEY("id"),
