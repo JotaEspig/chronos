@@ -16,7 +16,7 @@ func TestCreateEmployee(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
 
 	// Create new employee
 	newEmployee := &employee.Employee{
@@ -52,7 +52,7 @@ func TestFindEmployeeByID(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
 
 	// Insert an employee in the database
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
@@ -75,7 +75,7 @@ func TestFindUserByUserID(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
 
 	// Insert an employee in the database
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
@@ -88,6 +88,40 @@ func TestFindUserByUserID(t *testing.T) {
 	assert.Equal(t, uint(1), e.ID)
 	assert.Equal(t, uint8(0), e.Type)
 	assert.Equal(t, uint(1), e.UserID)
+}
+
+func TestUpdateEmployee(t *testing.T) {
+	tx, err := config.DB.Begin()
+	assert.Equal(t, nil, err)
+	defer tx.Rollback()
+
+	cleanDB(tx)
+
+	// Insert a placeholder user
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+
+	// Insert an employee in the database
+	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
+	assert.Equal(t, nil, err)
+
+	// Fetch the employee that was just created
+	var id uint
+	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
+	assert.NotEqual(t, uint(0), id)
+
+	// Try to update the employee
+	e := &employee.Employee{
+		ID:     id,
+		Type:   1,
+		UserID: 1,
+	}
+	err = employee.UpdateEmployee(tx, e)
+	assert.Equal(t, nil, err)
+
+	// Check if the employee type has changed
+	var _type uint8
+	tx.QueryRow("SELECT \"type\" FROM \"employee\"").Scan(&_type)
+	assert.Equal(t, e.Type, _type)
 }
 
 func TestDeleteEmployeeByID(t *testing.T) {
