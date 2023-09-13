@@ -7,10 +7,11 @@ var (
 	createEmployeeQuery       = `INSERT INTO "employee"("type", "user_id") VALUES (?, ?);`
 	findEmployeeByIDQuery     = `SELECT "id", "type", "user_id" FROM "employee" WHERE "id" = ?;`
 	findEmployeeByUserIDQuery = `SELECT "id", "type", "user_id" FROM "employee" WHERE "user_id" = ?;`
+	updateEmployeeByIDQuery   = `UPDATE "employee" SET "type" = ?, "user_id" = ? WHERE "id" = ?;`
 	deleteEmployeeByIDQuery   = `DELETE FROM "employee" WHERE "id" = ?`
 )
 
-// CreateEmployee creates a user in the database
+// CreateEmployee creates an employee in the database
 func CreateEmployee(tx *sql.Tx, employee *Employee) error {
 	stmt, err := tx.Prepare(createEmployeeQuery)
 	if err != nil {
@@ -33,27 +34,38 @@ func CreateEmployee(tx *sql.Tx, employee *Employee) error {
 
 // FindEmployeeByID retrieves an employee from the database by its ID
 func FindEmployeeByID(tx *sql.Tx, id uint) (*Employee, error) {
-	u := &Employee{}
-	err := tx.QueryRow(findEmployeeByIDQuery, id).Scan(&u.ID, &u.Type, &u.UserID)
+	e := &Employee{}
+	err := tx.QueryRow(findEmployeeByIDQuery, id).Scan(&e.ID, &e.Type, &e.UserID)
 	if err != nil {
 		return nil, err
 	}
 
-	return u, nil
+	return e, nil
 }
 
 // FindEmployeeByUserID retrieves an employee from the database by its UserID
 func FindEmployeeByUserID(tx *sql.Tx, id uint) (*Employee, error) {
-	u := &Employee{}
-	err := tx.QueryRow(findEmployeeByUserIDQuery, id).Scan(&u.ID, &u.Type, &u.UserID)
+	e := &Employee{}
+	err := tx.QueryRow(findEmployeeByUserIDQuery, id).Scan(&e.ID, &e.Type, &e.UserID)
 	if err != nil {
 		return nil, err
 	}
 
-	return u, nil
+	return e, nil
 }
 
-// DeleteEmployeeByID deletes an employee from the database by its ID
+// UpdateEmployee updates an employee in the database from a given Employee
+func UpdateEmployee(tx *sql.Tx, employee *Employee) error {
+	stmt, err := tx.Prepare(updateEmployeeByIDQuery)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(employee.Type, employee.UserID, employee.ID)
+	return err
+}
+
+// DeleteEmployeeByID deletes an employee in the database by its ID
 func DeleteEmployeeByID(tx *sql.Tx, id uint) error {
 	stmt, err := tx.Prepare(deleteEmployeeByIDQuery)
 	if err != nil {
