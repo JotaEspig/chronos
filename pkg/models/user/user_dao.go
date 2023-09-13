@@ -5,7 +5,7 @@ import "database/sql"
 
 var (
 	createUserQuery         = `INSERT INTO "user"("username") VALUES (?);`
-	findUserByIdQuery       = `SELECT "id", "username" FROM "user" WHERE "id" = ?;`
+	findUserByIDQuery       = `SELECT "id", "username" FROM "user" WHERE "id" = ?;`
 	findUserByUsernameQuery = `SELECT "id", "username" FROM "user"
                                WHERE "username" = ?;`
 )
@@ -34,7 +34,7 @@ func CreateUser(tx *sql.Tx, user *User) error {
 // FindUserByID retrieves a user from the database by its ID
 func FindUserByID(tx *sql.Tx, id uint) (*User, error) {
 	u := &User{}
-	err := tx.QueryRow(findUserByIdQuery, id).Scan(&u.ID, &u.Username)
+	err := tx.QueryRow(findUserByIDQuery, id).Scan(&u.ID, &u.Username)
 	if err != nil {
 		return nil, err
 	}
