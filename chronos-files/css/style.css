@@ -1,3 +1,83 @@
+:root {
+    --green: #309f41;
+    --red: #cf171f;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
 body {
-    font-family: "Arial"
+    display: grid;
+    grid-template-columns: 10ch auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.header {
+    grid-column: 1 / span 3;
+    grid-row 1;
+}
+.time {
+    grid-column: 1;
+    grid-row: 2;
+
+}
+
+.hour {
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.schedule {
+    grid-column: 2 / span 3;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+}
+
+.week-name {
+    text-align: center;
+}
+
+.schedule-week {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 10% 90%;
+}
+
+.schedules {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
+
+
+.schedule hr {
+    width: 100%;
+}
+
+.schedule-item {
+   width: 100px;
+   background-color: var(--green);
+   position: absolute;
+
+}
+
+
+
+.week-selction {
+    display: flex;
+    flex-flow: row nowrap;
+    grid-column: 1 / span 3;
+    grid-row: 3;
+}
+
+.week-option {
+    background-color: gray;
+    border-radius: 2000px;
+    margin: 0 4rem;
+    height: 15px;
+    width: 15px;
+}
+
+.current-week {
+    background-color: var(--green);
 }
