@@ -8,7 +8,8 @@ var (
 	findUserByIDQuery       = `SELECT "id", "username" FROM "user" WHERE "id" = ?;`
 	findUserByUsernameQuery = `SELECT "id", "username" FROM "user"
                                WHERE "username" = ?;`
-	deleteUserByIDQuery = `DELETE FROM "user" WHERE "id" = ?`
+	updateUserByIDQuery = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
+	deleteUserByIDQuery = `DELETE FROM "user" WHERE "id" = ?;`
 )
 
 // CreateUser creates a user in the database
@@ -54,6 +55,18 @@ func FindUserByUsername(tx *sql.Tx, username string) (*User, error) {
 	return u, nil
 }
 
+// UpdateUser updates a user in the database
+func UpdateUser(tx *sql.Tx, u *User) error {
+	stmt, err := tx.Prepare(updateUserByIDQuery)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(u.Username, u.ID)
+	return err
+}
+
+// DeleteUserById deletes a user in the database by its ID
 func DeleteUserById(tx *sql.Tx, id uint) error {
 	stmt, err := tx.Prepare(deleteUserByIDQuery)
 	if err != nil {
