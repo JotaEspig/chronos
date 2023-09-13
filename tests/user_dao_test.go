@@ -62,9 +62,11 @@ func TestFindUserByUsername(t *testing.T) {
 
 	cleanDB(tx)
 
+	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
 	assert.Equal(t, nil, err)
 
+	// Try to fetch the user
 	u, err := user.FindUserByUsername(tx, "test")
 	assert.NotEqual(t, nil, u)
 	assert.Equal(t, nil, err)
