@@ -9,6 +9,6 @@ import (
 
 func init() {
 	godotenv.Load("../.env")
-	config.InitDB()
 	os.Setenv("IS_TEST_RUN", "true")
+	config.InitDB()
 }
