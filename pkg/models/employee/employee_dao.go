@@ -6,7 +6,7 @@ var (
 	createEmployeeQuery       = `INSERT INTO "employee"("type", "user_id") VALUES (?, ?);`
 	findEmployeeByIDQuery     = `SELECT "id", "type", "user_id" FROM "employee" WHERE "id" = ?;`
 	findEmployeeByUserIDQuery = `SELECT "id", "type", "user_id" FROM "employee" WHERE "user_id" = ?;`
-	updateEmployeeByIDQuery   = `UPDATE "employee" SET "type" = ?, "user_id" = ? WHERE "id" = ?;`
+	updateEmployeeQuery       = `UPDATE "employee" SET "type" = ?, "user_id" = ? WHERE "id" = ?;`
 	deleteEmployeeByIDQuery   = `DELETE FROM "employee" WHERE "id" = ?`
 )
 
@@ -55,7 +55,7 @@ func FindEmployeeByUserID(tx *sql.Tx, id uint) (*Employee, error) {
 
 // UpdateEmployee updates an employee in the database from a given Employee
 func UpdateEmployee(tx *sql.Tx, employee *Employee) error {
-	stmt, err := tx.Prepare(updateEmployeeByIDQuery)
+	stmt, err := tx.Prepare(updateEmployeeQuery)
 	if err != nil {
 		return err
 	}
