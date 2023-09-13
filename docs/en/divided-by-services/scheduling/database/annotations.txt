@@ -1,0 +1,10 @@
+# TODO
+I think we should implement the 'flag' type (that is shown in
+'docs/en/scheduling/diagrams/' diagrams) using a Unix Permission style where
+the permissions of the system will be defined as bits. see:
+https://docs.nersc.gov/filesystems/unix-file-permissions/#chmod
+
+# just to don't forget
+Decide either:
+ - implement 'date' type as a string of format 'YYYY-MM-DD HH:MM'
+ - implement 'date' type as Unix format
