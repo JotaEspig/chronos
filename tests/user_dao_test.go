@@ -121,7 +121,7 @@ func TestDeleteUserByID(t *testing.T) {
 	assert.NotEqual(t, uint(0), id)
 
 	// Try to delete the user
-	err = user.DeleteUserById(tx, id)
+	err = user.DeleteUserByID(tx, id)
 	assert.Equal(t, nil, err)
 
 	// Check if the user still exists (it should not)
