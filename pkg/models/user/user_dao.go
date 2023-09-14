@@ -7,7 +7,7 @@ var (
 	findUserByIDQuery       = `SELECT "id", "username" FROM "user" WHERE "id" = ?;`
 	findUserByUsernameQuery = `SELECT "id", "username" FROM "user"
                                WHERE "username" = ?;`
-	updateUserByIDQuery = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
+	updateUserQuery     = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
 	deleteUserByIDQuery = `DELETE FROM "user" WHERE "id" = ?;`
 )
 
@@ -56,7 +56,7 @@ func FindUserByUsername(tx *sql.Tx, username string) (*User, error) {
 
 // UpdateUser updates a user in the database
 func UpdateUser(tx *sql.Tx, u *User) error {
-	stmt, err := tx.Prepare(updateUserByIDQuery)
+	stmt, err := tx.Prepare(updateUserQuery)
 	if err != nil {
 		return err
 	}
@@ -65,8 +65,8 @@ func UpdateUser(tx *sql.Tx, u *User) error {
 	return err
 }
 
-// DeleteUserById deletes a user in the database by its ID
-func DeleteUserById(tx *sql.Tx, id uint) error {
+// DeleteUserByID deletes a user in the database by its ID
+func DeleteUserByID(tx *sql.Tx, id uint) error {
 	stmt, err := tx.Prepare(deleteUserByIDQuery)
 	if err != nil {
 		return err
