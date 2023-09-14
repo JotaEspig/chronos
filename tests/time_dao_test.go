@@ -127,7 +127,7 @@ func TestDeleteTimeByID(t *testing.T) {
 	assert.NotEqual(t, uint(0), id)
 
 	// Try to delete the time
-	err = time.DeleteTimeById(tx, id)
+	err = time.DeleteTimeByID(tx, id)
 	assert.Equal(t, nil, err)
 
 	// Check if the time still exists (it should not)

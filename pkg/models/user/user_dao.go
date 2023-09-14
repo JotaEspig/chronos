@@ -65,8 +65,8 @@ func UpdateUser(tx *sql.Tx, u *User) error {
 	return err
 }
 
-// DeleteUserById deletes a user in the database by its ID
-func DeleteUserById(tx *sql.Tx, id uint) error {
+// DeleteUserByID deletes a user in the database by its ID
+func DeleteUserByID(tx *sql.Tx, id uint) error {
 	stmt, err := tx.Prepare(deleteUserByIDQuery)
 	if err != nil {
 		return err

@@ -56,8 +56,8 @@ func UpdateTime(tx *sql.Tx, t *Time) error {
 	return err
 }
 
-// DeleteTimeById deletes a user in the database by its ID
-func DeleteTimeById(tx *sql.Tx, id uint) error {
+// DeleteTimeByID deletes a time in the database by its ID
+func DeleteTimeByID(tx *sql.Tx, id uint) error {
 	stmt, err := tx.Prepare(deleteTimeByIDQuery)
 	if err != nil {
 		return err
