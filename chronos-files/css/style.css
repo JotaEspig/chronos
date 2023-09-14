@@ -58,6 +58,7 @@ body {
    width: 100px;
    background-color: var(--green);
    position: absolute;
+   border-radius: 0 0 25px 25px;
 
 }
 
