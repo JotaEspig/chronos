@@ -13,7 +13,7 @@ import (
 func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
-	if err != nil {
+	if !u.IsValid() || err != nil {
 		return c.NoContent(http.StatusBadRequest)
 	}
 	tx, err := config.DB.Begin()
