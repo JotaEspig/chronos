@@ -74,7 +74,7 @@ func updateUser(c echo.Context) error {
 	}
 
 	tx.Commit()
-	return c.NoContent(http.StatusCreated)
+	return c.NoContent(http.StatusOK)
 }
 
 func deleteUser(c echo.Context) error {
