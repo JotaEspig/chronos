@@ -8,6 +8,10 @@ type User struct {
 	Username string `json:"username"`
 }
 
+func (u *User) IsValid() bool {
+	return u.Username != ""
+}
+
 func (u *User) ToMap() types.JsonMap {
 	m := make(types.JsonMap)
 	m["id"] = u.ID
