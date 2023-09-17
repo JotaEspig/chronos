@@ -3,11 +3,33 @@ package userapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/user"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
+
+func createUser(c echo.Context) error {
+	u := user.User{}
+	err := json.NewDecoder(c.Request().Body).Decode(&u)
+	if err != nil {
+		return c.NoContent(http.StatusBadRequest)
+	}
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return c.NoContent(http.StatusInternalServerError)
+	}
+	defer tx.Rollback()
+
+	err = user.CreateUser(tx, &u)
+	if err != nil {
+		return c.NoContent(http.StatusConflict)
+	}
+
+	tx.Commit()
+	return c.NoContent(http.StatusCreated)
+}
 
 func getUser(c echo.Context) error {
 	idStr := c.Param("id")
