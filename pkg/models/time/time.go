@@ -3,6 +3,20 @@ package time
 
 import "chronos/pkg/types"
 
+type RepeatEnum uint8
+
+// Based on UNIX permission
+// These enums are simple. Maybe it should be refined
+const (
+	Monday    RepeatEnum = 0b00000001
+	Tuesday   RepeatEnum = 0b00000010
+	Wednesday RepeatEnum = 0b00000100
+	Thursday  RepeatEnum = 0b00001000
+	Friday    RepeatEnum = 0b00010000
+	Daily     RepeatEnum = 0b00100000
+	Weekly    RepeatEnum = 0b01000000
+)
+
 type Time struct {
 	ID         uint   `json:"id"`
 	Start      string `json:"start"`

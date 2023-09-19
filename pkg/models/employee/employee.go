@@ -3,6 +3,16 @@ package employee
 
 import "chronos/pkg/types"
 
+type TypeEnum uint8
+
+// Based on UNIX permission
+// These are placeholders, not the actual types.
+// TODO: make it correct
+const (
+	TypeProfessor    = 0b00000001
+	TypePsychologist = 0b00000010
+)
+
 type Employee struct {
 	ID     uint  `json:"id"`
 	Type   uint8 `json:"type"`
