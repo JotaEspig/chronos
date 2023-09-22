@@ -11,7 +11,7 @@ import (
 
 var DB *sql.DB
 
-func createTables() {
+func createTables(db *sql.DB) {
 	filePath := ""
 	if common.IsTestRun() {
 		filePath += "../"
@@ -19,7 +19,7 @@ func createTables() {
 	filePath += "db/sql-files/create_tables.sql"
 
 	query := common.ReadFile(filePath)
-	DB.Exec(query)
+	db.Exec(query)
 }
 
 func InitDB() {
@@ -34,5 +34,6 @@ func InitDB() {
 		panic(err)
 	}
 
-	createTables()
+	DB.SetMaxOpenConns(1000)
+	createTables(DB)
 }
