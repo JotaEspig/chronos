@@ -3,6 +3,7 @@ package tests
 import (
 	"chronos/config"
 	"chronos/pkg/models/employee"
+	"chronos/tests/employee_test"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,34 +15,9 @@ func TestCreateEmployee(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-
-	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-
-	// Create new employee
-	newEmployee := &employee.Employee{
-		Type:   0,
-		UserID: 1,
-	}
-
-	// Insert new employee to database
-	err = employee.CreateEmployee(tx, newEmployee)
-	assert.Equal(t, nil, err)
-
-	// Check that the employee has been successfully created and has a non-zero ID.
-	assert.NotEqual(t, uint(0), newEmployee.ID)
-
-	// Fetch the employee from the database by ID and check if it matches the created employee.
-	var id uint
-	var _type uint8
-	var userID uint
-
-	// Check if it was created
-	tx.QueryRow("SELECT \"id\", \"type\", \"user_id\" FROM \"employee\";").Scan(&id, &_type, &userID)
-	assert.Equal(t, nil, err)
-	assert.Equal(t, newEmployee.ID, id)
-	assert.Equal(t, newEmployee.Type, _type)
-	assert.Equal(t, newEmployee.UserID, userID)
+	employee_test.TryCreateValidEmployee(t, tx)
+	cleanDB(tx)
+	employee_test.TryCreateInvalidEmployee(t, tx)
 }
 
 func TestFindEmployeeByID(t *testing.T) {
