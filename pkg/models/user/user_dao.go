@@ -1,6 +1,10 @@
 package user
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+	"fmt"
+)
 
 var (
 	createUserQuery         = `INSERT INTO "user"("username") VALUES (?);`
@@ -38,6 +42,10 @@ func FindUserByID(tx *sql.Tx, id uint) (*User, error) {
 	err := tx.QueryRow(findUserByIDQuery, id).Scan(&u.ID, &u.Username)
 	if err != nil {
 		return nil, err
+	}
+	if u.ID == 0 {
+		errorString := fmt.Sprintf("user_dao: user with id = %d not found", u.ID)
+		return nil, errors.New(errorString)
 	}
 
 	return u, nil
