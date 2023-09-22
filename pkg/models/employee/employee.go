@@ -19,6 +19,10 @@ type Employee struct {
 	UserID uint  `json:"user_id"`
 }
 
+func (e *Employee) IsValid() bool {
+	return e.UserID != 0
+}
+
 func (e *Employee) ToMap() types.JsonMap {
 	m := make(types.JsonMap)
 	m["id"] = e.ID
