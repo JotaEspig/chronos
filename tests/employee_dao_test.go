@@ -26,44 +26,9 @@ func TestFindEmployeeByID(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-
-	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-
-	// Insert an employee in the database
-	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
-
-	// Try to fetch the employee
-	e, err := employee.FindEmployeeByID(tx, 1)
-	assert.NotEqual(t, nil, e)
-	assert.Equal(t, nil, err)
-	assert.Equal(t, uint(1), e.ID)
-	assert.Equal(t, uint8(0), e.Type)
-	assert.Equal(t, uint(1), e.UserID)
-}
-
-func TestFindUserByUserID(t *testing.T) {
-	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
-	defer tx.Rollback()
-
+	employee_test.TryFindValidEmployee(t, tx)
 	cleanDB(tx)
-
-	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-
-	// Insert an employee in the database
-	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
-
-	// Try to fetch the employee
-	e, err := employee.FindEmployeeByUserID(tx, 1)
-	assert.NotEqual(t, nil, e)
-	assert.Equal(t, nil, err)
-	assert.Equal(t, uint(1), e.ID)
-	assert.Equal(t, uint8(0), e.Type)
-	assert.Equal(t, uint(1), e.UserID)
+	employee_test.TryFindInvalidEmployee(t, tx)
 }
 
 func TestUpdateEmployee(t *testing.T) {
