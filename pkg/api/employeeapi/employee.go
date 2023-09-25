@@ -16,7 +16,7 @@ func createEmployee(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&e)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or user_id equals 0",
+			"error": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()

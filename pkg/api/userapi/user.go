@@ -16,17 +16,23 @@ func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	if !u.IsValid() || err != nil {
-		return c.NoContent(http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "some employee field may be missing or invalid",
+		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.NoContent(http.StatusInternalServerError)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
 	}
 	defer tx.Rollback()
 
 	err = user.CreateUser(tx, &u)
 	if err != nil {
-		return c.NoContent(http.StatusConflict)
+		return c.JSON(http.StatusConflict, map[string]string{
+			"error": "some values aren't valid or are causing database conflict",
+		})
 	}
 
 	tx.Commit()
@@ -38,17 +44,23 @@ func createUser(c echo.Context) error {
 func getUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.NoContent(http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "id param is missing in url path",
+		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.NoContent(http.StatusInternalServerError)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
 	}
 	defer tx.Rollback()
 
 	u, err := user.FindUserByID(tx, uint(id))
 	if err != nil {
-		return c.NoContent(http.StatusNotFound)
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"error:": "user not found",
+		})
 	}
 
 	uMap := u.ToMap()
@@ -65,22 +77,30 @@ func updateUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	if !u.IsValid() || err != nil {
-		return c.NoContent(http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "some employee field may be missing or invalid",
+		})
 	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.NoContent(http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "id param is missing in url path",
+		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.NoContent(http.StatusInternalServerError)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
 	}
 	defer tx.Rollback()
 
 	u.ID = uint(id)
 	err = user.UpdateUser(tx, &u)
 	if err != nil {
-		return c.NoContent(http.StatusConflict)
+		return c.JSON(http.StatusConflict, map[string]string{
+			"error": "some values aren't valid or are causing database conflict",
+		})
 	}
 
 	tx.Commit()
@@ -92,17 +112,23 @@ func updateUser(c echo.Context) error {
 func deleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.NoContent(http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "id param is missing in url path",
+		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.NoContent(http.StatusInternalServerError)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
 	}
 	defer tx.Rollback()
 
 	err = user.DeleteUserByID(tx, uint(id))
 	if err != nil {
-		return c.NoContent(http.StatusNotFound)
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"error:": "user not found",
+		})
 	}
 
 	tx.Commit()
