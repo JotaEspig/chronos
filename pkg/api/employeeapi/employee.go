@@ -5,6 +5,7 @@ import (
 	"chronos/pkg/models/employee"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -36,4 +37,32 @@ func createEmployee(c echo.Context) error {
 
 	tx.Commit()
 	return c.NoContent(http.StatusCreated)
+}
+
+// getEmployee is an employee controller that receives a param ("id") in the url
+// path and return a JSON if succeeds or a status code if something went wrong
+func getEmployee(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "id param is missing in url path",
+		})
+	}
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
+	}
+	defer tx.Rollback()
+
+	e, err := employee.FindEmployeeByID(tx, uint(id))
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"error:": "employee not found",
+		})
+	}
+
+	eMap := e.ToMap()
+	return c.JSON(http.StatusOK, eMap)
 }
