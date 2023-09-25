@@ -30,7 +30,7 @@ func createEmployee(c echo.Context) error {
 	err = employee.CreateEmployee(tx, &e)
 	if err != nil {
 		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values causes are causing conflict",
+			"error": "some values aren't valid or are causing database conflict",
 		})
 	}
 
