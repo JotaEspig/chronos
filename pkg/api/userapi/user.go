@@ -45,7 +45,7 @@ func getUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is missing in url path",
+			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
@@ -84,7 +84,7 @@ func updateUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is missing in url path",
+			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
@@ -113,7 +113,7 @@ func deleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is missing in url path",
+			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
