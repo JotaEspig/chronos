@@ -1,7 +1,10 @@
 // Package mtime provides support for operations with the model Time.
 package time
 
-import "chronos/pkg/types"
+import (
+	"chronos/pkg/types"
+	"time"
+)
 
 type RepeatEnum uint8
 
@@ -23,6 +26,15 @@ type Time struct {
 	End        string `json:"end"`
 	Repeat     uint8  `json:"repeat"`
 	EmployeeID uint   `json:"employee_id"`
+}
+
+func (t *Time) IsValid() bool {
+	_, err := time.Parse(time.DateTime, t.Start)
+	validations := err == nil
+	_, err = time.Parse(time.DateTime, t.End)
+	validations = validations && err == nil
+
+	return validations && t.EmployeeID != 0
 }
 
 func (t *Time) ToMap() types.JsonMap {
