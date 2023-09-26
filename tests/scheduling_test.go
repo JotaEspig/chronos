@@ -10,17 +10,17 @@ import (
 
 func TestCreateScheduling(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	_, err = tx.Exec(`INSERT INTO "user" VALUES (1, 'test');`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "employee" VALUES (1, 0, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "time" VALUES (1, "2002-01-01", "2002-02-01", 1, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	newScheduling := &scheduling.Scheduling{
 		Start:  "2022-01-01",
@@ -29,7 +29,7 @@ func TestCreateScheduling(t *testing.T) {
 		TimeID: 1,
 	}
 	err = scheduling.CreateScheduling(tx, newScheduling)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check that the scheduling entry has been successfully created and has a non-zero ID.
 	assert.NotEqual(t, uint(0), newScheduling.ID)
@@ -38,7 +38,7 @@ func TestCreateScheduling(t *testing.T) {
 	sched := scheduling.Scheduling{}
 	err = tx.QueryRow(`SELECT * FROM "scheduling"`).
 		Scan(&sched.ID, &sched.Start, &sched.End, &sched.UserID, &sched.TimeID)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, newScheduling.ID, sched.ID)
 	assert.Equal(t, newScheduling.Start, sched.Start)
 	assert.Equal(t, newScheduling.End, sched.End)
@@ -48,24 +48,24 @@ func TestCreateScheduling(t *testing.T) {
 
 func TestFindSchedulingByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "time" VALUES (1, "2002-01-01", "2002-02-01", 1, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "scheduling" VALUES (1, "2002-01-01", "2002-02-01", 1, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Try to fetch the scheduling
 	s, err := scheduling.FindSchedulingByID(tx, 1)
-	assert.NotEqual(t, nil, s)
-	assert.Equal(t, nil, err)
+	assert.NotNil(t, s)
+	assert.Nil(t, err)
 	assert.Equal(t, uint(1), s.ID)
 	assert.Equal(t, "2002-01-01", s.Start)
 	assert.Equal(t, "2002-02-01", s.End)
@@ -75,19 +75,19 @@ func TestFindSchedulingByID(t *testing.T) {
 
 func TestUpdateScheduling(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"time\" VALUES (1, \"2022\", \"2021\", 1, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "scheduling" VALUES (1, "2002-01-01", "2002-02-01", 1, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the scheduling that was just created
 	var id uint
@@ -103,7 +103,7 @@ func TestUpdateScheduling(t *testing.T) {
 		TimeID: 1,
 	}
 	err = scheduling.UpdateScheduling(tx, s)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the time type has changed
 	var start string
@@ -115,19 +115,19 @@ func TestUpdateScheduling(t *testing.T) {
 
 func TestDeleteSchedulingByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"time\" VALUES (1, \"2022\", \"2021\", 1, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "scheduling" VALUES (1, "2002-01-01", "2002-02-01", 1, 1);`)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the scheduling that was just created
 	var id uint
@@ -136,7 +136,7 @@ func TestDeleteSchedulingByID(t *testing.T) {
 
 	// Try to delete the scheduling
 	err = scheduling.DeleteSchedulingByID(tx, id)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the scheduling still exists (it should not)
 	id = 0

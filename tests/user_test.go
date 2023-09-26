@@ -10,7 +10,7 @@ import (
 
 func TestCreateUser(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
@@ -20,7 +20,7 @@ func TestCreateUser(t *testing.T) {
 	}
 
 	err = user.CreateUser(tx, newUser)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check that the user has been successfully created and has a non-zero ID.
 	assert.NotEqual(t, uint(0), newUser.ID)
@@ -31,59 +31,59 @@ func TestCreateUser(t *testing.T) {
 
 	// Check if it was created
 	tx.QueryRow("SELECT \"id\", \"username\" FROM \"user\";").Scan(&id, &username)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, newUser.ID, id)
 	assert.Equal(t, newUser.Username, username)
 }
 
 func TestFindUserByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Try to fetch the user
 	u, err := user.FindUserByID(tx, 1)
-	assert.NotEqual(t, nil, u)
-	assert.Equal(t, nil, err)
+	assert.NotNil(t, u)
+	assert.Nil(t, err)
 	assert.Equal(t, uint(1), u.ID)
 	assert.Equal(t, "test", u.Username)
 }
 
 func TestFindUserByUsername(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Try to fetch the user
 	u, err := user.FindUserByUsername(tx, "test")
-	assert.NotEqual(t, nil, u)
-	assert.Equal(t, nil, err)
+	assert.NotNil(t, u)
+	assert.Nil(t, err)
 	assert.Equal(t, uint(1), u.ID)
 	assert.Equal(t, "test", u.Username)
 }
 
 func TestUpdateUser(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the user that was just created
 	var id uint
@@ -96,7 +96,7 @@ func TestUpdateUser(t *testing.T) {
 		Username: "test2",
 	}
 	err = user.UpdateUser(tx, u)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the user username is changed
 	var username string
@@ -106,14 +106,14 @@ func TestUpdateUser(t *testing.T) {
 
 func TestDeleteUserByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
 
 	// Insert a user in the database
 	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the user that was just created
 	var id uint
@@ -122,7 +122,7 @@ func TestDeleteUserByID(t *testing.T) {
 
 	// Try to delete the user
 	err = user.DeleteUserByID(tx, id)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the user still exists (it should not)
 	id = 0

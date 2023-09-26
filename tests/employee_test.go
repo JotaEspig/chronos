@@ -11,7 +11,7 @@ import (
 
 func TestCreateEmployee(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
@@ -22,7 +22,7 @@ func TestCreateEmployee(t *testing.T) {
 
 func TestFindEmployeeByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
@@ -33,7 +33,7 @@ func TestFindEmployeeByID(t *testing.T) {
 
 func TestUpdateEmployee(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
@@ -43,7 +43,7 @@ func TestUpdateEmployee(t *testing.T) {
 
 	// Insert an employee in the database
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the employee that was just created
 	var id uint
@@ -57,7 +57,7 @@ func TestUpdateEmployee(t *testing.T) {
 		UserID: 1,
 	}
 	err = employee.UpdateEmployee(tx, e)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the employee type has changed
 	var _type uint8
@@ -67,7 +67,7 @@ func TestUpdateEmployee(t *testing.T) {
 
 func TestDeleteEmployeeByID(t *testing.T) {
 	tx, err := config.DB.Begin()
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	defer tx.Rollback()
 
 	cleanDB(tx)
@@ -77,7 +77,7 @@ func TestDeleteEmployeeByID(t *testing.T) {
 
 	// Insert an employee in the database
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Fetch the employee that was just created
 	var id uint
@@ -86,7 +86,7 @@ func TestDeleteEmployeeByID(t *testing.T) {
 
 	// Try to delete the employee
 	err = employee.DeleteEmployeeByID(tx, id)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check if the employee still exists (it should not)
 	id = 0

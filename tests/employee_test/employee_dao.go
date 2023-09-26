@@ -20,7 +20,7 @@ func TryCreateValidEmployee(t *testing.T, tx *sql.Tx) {
 
 	// Insert new employee to database
 	err := employee.CreateEmployee(tx, newEmployee)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Check that the employee has been successfully created and has a non-zero ID.
 	assert.NotEqual(t, uint(0), newEmployee.ID)
@@ -32,7 +32,7 @@ func TryCreateValidEmployee(t *testing.T, tx *sql.Tx) {
 
 	// Check if it was created
 	tx.QueryRow("SELECT \"id\", \"type\", \"user_id\" FROM \"employee\";").Scan(&id, &_type, &userID)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, newEmployee.ID, id)
 	assert.Equal(t, newEmployee.Type, _type)
 	assert.Equal(t, newEmployee.UserID, userID)
@@ -47,7 +47,7 @@ func TryCreateInvalidEmployee(t *testing.T, tx *sql.Tx) {
 
 	// Try to insert new employee to database
 	err := employee.CreateEmployee(tx, newEmployee)
-	assert.NotEqual(t, nil, err)
+	assert.NotNil(t, err)
 
 	// Check that the employee has been successfully created and has a non-zero ID.
 	assert.Equal(t, uint(0), newEmployee.ID)
@@ -59,7 +59,7 @@ func TryCreateInvalidEmployee(t *testing.T, tx *sql.Tx) {
 
 	// Check if it was created
 	tx.QueryRow("SELECT \"id\", \"type\", \"user_id\" FROM \"employee\";").Scan(&id, &_type, &userID)
-	assert.NotEqual(t, nil, err)
+	assert.NotNil(t, err)
 	assert.NotEqual(t, newEmployee.Type, _type)
 	assert.NotEqual(t, newEmployee.UserID, userID)
 }
@@ -70,12 +70,12 @@ func TryFindValidEmployee(t *testing.T, tx *sql.Tx) {
 
 	// Insert an employee in the database
 	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 2, 1);")
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 
 	// Try to fetch the employee
 	e, err := employee.FindEmployeeByID(tx, 1)
-	assert.NotEqual(t, nil, e)
-	assert.Equal(t, nil, err)
+	assert.NotNil(t, e)
+	assert.Nil(t, err)
 	assert.Equal(t, uint(1), e.ID)
 	assert.Equal(t, uint8(2), e.Type)
 	assert.Equal(t, uint(1), e.UserID)
@@ -84,6 +84,6 @@ func TryFindValidEmployee(t *testing.T, tx *sql.Tx) {
 func TryFindInvalidEmployee(t *testing.T, tx *sql.Tx) {
 	// Try to fetch the employee (it shouldn't work)
 	e, err := employee.FindEmployeeByID(tx, 1)
-	assert.Equal(t, nil, e)
-	assert.NotEqual(t, nil, err)
+	assert.NotNil(t, err)
+	assert.Nil(t, e)
 }
