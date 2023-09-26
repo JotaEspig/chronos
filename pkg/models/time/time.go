@@ -31,9 +31,10 @@ type Time struct {
 }
 
 func (t *Time) IsValid() bool {
-	_, err := time.Parse(time.DateTime, t.Start)
+	start, err := time.Parse(time.DateTime, t.Start)
 	validations := err == nil
-	_, err = time.Parse(time.DateTime, t.End)
+	end, err := time.Parse(time.DateTime, t.End)
+	validations = validations && end.After(start)
 	validations = validations && err == nil
 
 	return validations && t.EmployeeID != 0
