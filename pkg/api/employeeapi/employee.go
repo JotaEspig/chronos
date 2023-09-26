@@ -14,8 +14,8 @@ import (
 // the request and return a status code
 func createEmployee(c echo.Context) error {
 	e := employee.Employee{}
-	e.Sanitize(config.StrictPolicy)
 	err := json.NewDecoder(c.Request().Body).Decode(&e)
+	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "some employee field may be missing or invalid",

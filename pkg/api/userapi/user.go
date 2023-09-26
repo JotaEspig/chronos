@@ -14,8 +14,8 @@ import (
 // request and return a status code
 func createUser(c echo.Context) error {
 	u := user.User{}
-	u.Sanitize(config.StrictPolicy)
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
+	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "some user field may be missing or invalid",
