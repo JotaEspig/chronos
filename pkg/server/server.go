@@ -24,8 +24,8 @@ func NewServer(port int) *Server {
 	e := echo.New()
 	s.echo = e
 
+	s.echo.Use(getLoggerFunc())
 	s.echo.Use(middleware.Recover())
-	s.echo.Use(middleware.Logger())
 	s.echo.Use(middleware.CORS())
 
 	s.setStaticRoutes()
