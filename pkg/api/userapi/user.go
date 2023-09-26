@@ -126,8 +126,8 @@ func deleteUser(c echo.Context) error {
 
 	err = user.DeleteUserByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error:": "user not found",
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error:": "unknown error when executing sql query",
 		})
 	}
 
