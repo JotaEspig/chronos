@@ -59,7 +59,7 @@ func getEmployee(c echo.Context) error {
 	e, err := employee.FindEmployeeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
-			"error:": "employee not found",
+			"error": "employee not found",
 		})
 	}
 
@@ -128,7 +128,7 @@ func deleteEmployee(c echo.Context) error {
 	err = employee.DeleteEmployeeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error:": "unknown error when executing sql query",
+			"error": "unknown error when executing sql query",
 		})
 	}
 
