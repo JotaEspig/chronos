@@ -1,3 +1,4 @@
+// package userapi provides api endpoints for user operations
 package userapi
 
 import (

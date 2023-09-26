@@ -1,3 +1,4 @@
+// package server provides Echo server creation and configuration
 package server
 
 import (

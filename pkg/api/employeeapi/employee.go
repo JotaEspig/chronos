@@ -1,3 +1,4 @@
+// package employeeapi provides api endpoints for employee operations
 package employeeapi
 
 import (

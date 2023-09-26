@@ -1,3 +1,4 @@
+// package timeapi provides api endpoints for time operations
 package timeapi
 
 import (

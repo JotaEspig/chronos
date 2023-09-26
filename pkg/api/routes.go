@@ -1,3 +1,4 @@
+// package api provides api endpoints
 package api
 
 import (

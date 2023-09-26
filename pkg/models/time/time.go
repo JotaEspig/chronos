@@ -1,4 +1,4 @@
-// Package mtime provides support for operations with the model Time.
+// package time provides support for operations with the model Time.
 package time
 
 import (
