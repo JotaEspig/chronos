@@ -3,6 +3,7 @@ package api
 import (
 	"chronos/pkg/api/employeeapi"
 	"chronos/pkg/api/other"
+	"chronos/pkg/api/timeapi"
 	"chronos/pkg/api/userapi"
 	"chronos/pkg/types"
 )
@@ -13,4 +14,5 @@ func init() {
 	AllAvailableRoutes = append(AllAvailableRoutes, other.AvailableRoutes...)
 	AllAvailableRoutes = append(AllAvailableRoutes, userapi.AvailableRoutes...)
 	AllAvailableRoutes = append(AllAvailableRoutes, employeeapi.AvailableRoutes...)
+	AllAvailableRoutes = append(AllAvailableRoutes, timeapi.AvailableRoutes...)
 }
