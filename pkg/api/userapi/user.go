@@ -74,17 +74,17 @@ func getUser(c echo.Context) error {
 // you must include the original value in the JSON that contains the user.
 // That's because of the way UpdateUser function works
 func updateUser(c echo.Context) error {
-	u := user.User{}
-	err := json.NewDecoder(c.Request().Body).Decode(&u)
-	if !u.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some user field may be missing or invalid",
-		})
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "id param is invalid",
+		})
+	}
+	u := user.User{}
+	err = json.NewDecoder(c.Request().Body).Decode(&u)
+	if !u.IsValid() || err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
