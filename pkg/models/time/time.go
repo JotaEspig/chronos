@@ -1,9 +1,11 @@
-// Package mtime provides support for operations with the model Time.
+// package time provides support for operations with the model Time.
 package time
 
 import (
 	"chronos/pkg/types"
 	"time"
+
+	"github.com/microcosm-cc/bluemonday"
 )
 
 type RepeatEnum uint8
@@ -35,6 +37,11 @@ func (t *Time) IsValid() bool {
 	validations = validations && err == nil
 
 	return validations && t.EmployeeID != 0
+}
+
+func (t *Time) Sanitize(policy *bluemonday.Policy) {
+	t.Start = policy.Sanitize(t.Start)
+	t.End = policy.Sanitize(t.End)
 }
 
 func (t *Time) ToMap() types.JsonMap {

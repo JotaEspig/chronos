@@ -1,3 +1,4 @@
+// package userapi provides api endpoints for user operations
 package userapi
 
 import (
@@ -15,6 +16,7 @@ import (
 func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
+	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "some user field may be missing or invalid",
@@ -59,7 +61,7 @@ func getUser(c echo.Context) error {
 	u, err := user.FindUserByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
-			"error:": "user not found",
+			"error": "user not found",
 		})
 	}
 
@@ -82,6 +84,7 @@ func updateUser(c echo.Context) error {
 	}
 	u := user.User{}
 	err = json.NewDecoder(c.Request().Body).Decode(&u)
+	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "some user field may be missing or invalid",
@@ -127,7 +130,7 @@ func deleteUser(c echo.Context) error {
 	err = user.DeleteUserByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error:": "unknown error when executing sql query",
+			"error": "unknown error when executing sql query",
 		})
 	}
 

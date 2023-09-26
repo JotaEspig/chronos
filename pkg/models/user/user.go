@@ -1,7 +1,11 @@
 // package user provides support for operations with User model
 package user
 
-import "chronos/pkg/types"
+import (
+	"chronos/pkg/types"
+
+	"github.com/microcosm-cc/bluemonday"
+)
 
 type User struct {
 	ID       uint   `json:"id"`
@@ -10,6 +14,10 @@ type User struct {
 
 func (u *User) IsValid() bool {
 	return u.Username != ""
+}
+
+func (u *User) Sanitize(policy *bluemonday.Policy) {
+	u.Username = policy.Sanitize(u.Username)
 }
 
 func (u *User) ToMap() types.JsonMap {

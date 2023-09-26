@@ -1,9 +1,9 @@
-// package employeeapi provides api endpoints for employee operations
-package employeeapi
+// package timeapi provides api endpoints for time operations
+package timeapi
 
 import (
 	"chronos/config"
-	"chronos/pkg/models/employee"
+	"chronos/pkg/models/time"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -11,15 +11,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// createEmployee is an employee controller that receives a JSON in the body of
-// the request and return a status code
-func createEmployee(c echo.Context) error {
-	e := employee.Employee{}
-	err := json.NewDecoder(c.Request().Body).Decode(&e)
-	e.Sanitize(config.StrictPolicy)
-	if !e.IsValid() || err != nil {
+// createTime is a time controller that receives a JSON in the body of the
+// request and return a status code
+func createTime(c echo.Context) error {
+	t := time.Time{}
+	err := json.NewDecoder(c.Request().Body).Decode(&t)
+	t.Sanitize(config.StrictPolicy)
+	if !t.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+			"error": "some time field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
@@ -30,7 +30,7 @@ func createEmployee(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	err = employee.CreateEmployee(tx, &e)
+	err = time.CreateTime(tx, &t)
 	if err != nil {
 		return c.JSON(http.StatusConflict, map[string]string{
 			"error": "some values aren't valid or are causing database conflict",
@@ -41,9 +41,9 @@ func createEmployee(c echo.Context) error {
 	return c.NoContent(http.StatusCreated)
 }
 
-// getEmployee is an employee controller that receives a param ("id") in the url
-// path and return a JSON if succeeds or a status code if something went wrong
-func getEmployee(c echo.Context) error {
+// getTime is a time controller that receives a param ("id") in the url path
+// and return a JSON if succeeds or a status code if something went wrong
+func getTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
@@ -58,37 +58,37 @@ func getEmployee(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	e, err := employee.FindEmployeeByID(tx, uint(id))
+	t, err := time.FindTimeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "employee not found",
+			"error": "time not found",
 		})
 	}
 
-	eMap := e.ToMap()
-	return c.JSON(http.StatusOK, eMap)
+	tMap := t.ToMap()
+	return c.JSON(http.StatusOK, tMap)
 }
 
-// updateEmployee is an employee controller that receives a param ("id") in the
+// updateTime is a time controller that receives a param ("id") in the
 // url path and a JSON in the body of the request and return a status code.
-// Attention: You must send the whole employee values even if you don't want to
-// update something, e.g. you want to update just the type of the employee,
+// Attention: You must send the whole time values even if you don't want to
+// update something, e.g. you want to update just the start of the time,
 // even so you must include the originals values in the JSON that contains the
-// employee.
-// That's because of the way UpdateEmployee function works
-func updateEmployee(c echo.Context) error {
+// time.
+// That's because of the way UpdateTime function works
+func updateTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "id param is invalid",
 		})
 	}
-	e := employee.Employee{}
+	e := time.Time{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+			"error": "some time field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
@@ -100,7 +100,7 @@ func updateEmployee(c echo.Context) error {
 	defer tx.Rollback()
 
 	e.ID = uint(id)
-	err = employee.UpdateEmployee(tx, &e)
+	err = time.UpdateTime(tx, &e)
 	if err != nil {
 		return c.JSON(http.StatusConflict, map[string]string{
 			"error": "some values aren't valid or are causing database conflict",
@@ -111,9 +111,9 @@ func updateEmployee(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-// deleteEmployee is an employee controller that receives a param ("id") in the
+// deleteTime is a time controller that receives a param ("id") in the
 // url path and a JSON in the body of the request and return a status code
-func deleteEmployee(c echo.Context) error {
+func deleteTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
@@ -128,7 +128,7 @@ func deleteEmployee(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	err = employee.DeleteEmployeeByID(tx, uint(id))
+	err = time.DeleteTimeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "unknown error when executing sql query",

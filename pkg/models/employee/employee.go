@@ -1,7 +1,11 @@
 // package employee provides support for operations with Employee model
 package employee
 
-import "chronos/pkg/types"
+import (
+	"chronos/pkg/types"
+
+	"github.com/microcosm-cc/bluemonday"
+)
 
 type TypeEnum uint8
 
@@ -21,6 +25,9 @@ type Employee struct {
 
 func (e *Employee) IsValid() bool {
 	return e.UserID != 0
+}
+
+func (e *Employee) Sanitize(policy *bluemonday.Policy) {
 }
 
 func (e *Employee) ToMap() types.JsonMap {
