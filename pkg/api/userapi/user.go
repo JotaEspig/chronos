@@ -17,7 +17,7 @@ func createUser(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+			"error": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
@@ -78,7 +78,7 @@ func updateUser(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+			"error": "some user field may be missing or invalid",
 		})
 	}
 	id, err := strconv.Atoi(c.Param("id"))
