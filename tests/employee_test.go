@@ -2,12 +2,16 @@ package tests
 
 import (
 	"chronos/config"
-	"chronos/pkg/models/employee"
-	"chronos/tests/employee_test"
+	"chronos/tests/employeetest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestEmployeeIsValid(t *testing.T) {
+	employeetest.TryValidEmployeeIsValid(t)
+	employeetest.TryInvalidEmployeeIsValid(t)
+}
 
 func TestCreateEmployee(t *testing.T) {
 	tx, err := config.DB.Begin()
@@ -15,9 +19,9 @@ func TestCreateEmployee(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-	employee_test.TryCreateValidEmployee(t, tx)
+	employeetest.TryCreateValidEmployee(t, tx)
 	cleanDB(tx)
-	employee_test.TryCreateInvalidEmployee(t, tx)
+	employeetest.TryCreateInvalidEmployee(t, tx)
 }
 
 func TestFindEmployeeByID(t *testing.T) {
@@ -26,9 +30,9 @@ func TestFindEmployeeByID(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-	employee_test.TryFindValidEmployee(t, tx)
+	employeetest.TryFindValidEmployee(t, tx)
 	cleanDB(tx)
-	employee_test.TryFindInvalidEmployee(t, tx)
+	employeetest.TryFindInvalidEmployee(t, tx)
 }
 
 func TestUpdateEmployee(t *testing.T) {
@@ -37,32 +41,9 @@ func TestUpdateEmployee(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-
-	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
-
-	// Insert an employee in the database
-	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Nil(t, err)
-
-	// Fetch the employee that was just created
-	var id uint
-	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
-	assert.NotEqual(t, uint(0), id)
-
-	// Try to update the employee
-	e := &employee.Employee{
-		ID:     id,
-		Type:   1,
-		UserID: 1,
-	}
-	err = employee.UpdateEmployee(tx, e)
-	assert.Nil(t, err)
-
-	// Check if the employee type has changed
-	var _type uint8
-	tx.QueryRow("SELECT \"type\" FROM \"employee\"").Scan(&_type)
-	assert.Equal(t, e.Type, _type)
+	employeetest.TryUpdateValidEmployee(t, tx)
+	cleanDB(tx)
+	employeetest.TryUpdateInvalidEmployee(t, tx)
 }
 
 func TestDeleteEmployeeByID(t *testing.T) {
@@ -71,25 +52,5 @@ func TestDeleteEmployeeByID(t *testing.T) {
 	defer tx.Rollback()
 
 	cleanDB(tx)
-
-	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
-
-	// Insert an employee in the database
-	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
-	assert.Nil(t, err)
-
-	// Fetch the employee that was just created
-	var id uint
-	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
-	assert.NotEqual(t, uint(0), id)
-
-	// Try to delete the employee
-	err = employee.DeleteEmployeeByID(tx, id)
-	assert.Nil(t, err)
-
-	// Check if the employee still exists (it should not)
-	id = 0
-	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
-	assert.Equal(t, uint(0), id)
+	employeetest.TryDeleteValidEmployee(t, tx)
 }
