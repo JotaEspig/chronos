@@ -4,8 +4,8 @@ import "database/sql"
 
 var (
 	createEmployeeQuery       = `INSERT INTO "employee"("type", "user_id") VALUES (?, ?);`
-	findEmployeeByIDQuery     = `SELECT "id", "type", "user_id" FROM "employee" WHERE "id" = ?;`
-	findEmployeeByUserIDQuery = `SELECT "id", "type", "user_id" FROM "employee" WHERE "user_id" = ?;`
+	findEmployeeByIDQuery     = `SELECT * FROM "employee" WHERE "id" = ?;`
+	findEmployeeByUserIDQuery = `SELECT * FROM "employee" WHERE "user_id" = ?;`
 	updateEmployeeQuery       = `UPDATE "employee" SET "type" = ?, "user_id" = ? WHERE "id" = ?;`
 	deleteEmployeeByIDQuery   = `DELETE FROM "employee" WHERE "id" = ?`
 )
