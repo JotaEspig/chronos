@@ -7,6 +7,8 @@ var (
                        VALUES (?, ?, ?, ?);`
 	findTimeByIDQuery = `SELECT "id", "start", "end", "repeat", "employee_id" FROM "time"
                          WHERE "id" = ?;`
+	getTimesQuery = `SELECT "id", "start", "end", "repeat", "employee_id" FROM "time"
+                         WHERE start >= date("now");`
 	updateTimeQuery = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
@@ -43,6 +45,21 @@ func FindTimeByID(tx *sql.Tx, id uint) (*Time, error) {
 	}
 
 	return t, nil
+}
+func GetTimes(tx *sql.Tx) ([]Time, error) {
+	t := &Time{}
+	rows, err := tx.Query(getTimesQuery)
+  
+  times := make([]Time, 0);
+  for rows.Next() {
+    rows.Scan(&t.ID, &t.Start, &t.End, &t.Repeat, &t.EmployeeID)
+    times = append(times, *t)
+  }
+	if err != nil {
+		return nil, err
+	}
+
+	return times, nil
 }
 
 // UpdateTime updates a time in the database

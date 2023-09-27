@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"chronos/pkg/types"
 
 	"github.com/labstack/echo/v4"
 )
@@ -69,6 +70,28 @@ func getTime(c echo.Context) error {
 	return c.JSON(http.StatusOK, tMap)
 }
 
+func getTimes(c echo.Context) error {
+
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
+	}
+	defer tx.Rollback()
+
+	t, err := time.GetTimes(tx)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"error": "time not found",
+		})
+	}
+  timesJson := make(types.JsonMap)
+  timesJson["times"] = t
+
+	//tMap := t.ToMap()
+	return c.JSON(http.StatusOK, timesJson)
+}
 // updateTime is a time controller that receives a param ("id") in the
 // url path and a JSON in the body of the request and return a status code.
 // Attention: You must send the whole time values even if you don't want to
