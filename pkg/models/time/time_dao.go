@@ -1,13 +1,18 @@
 package time
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
+
+var byPage uint = 10
 
 var (
 	createTimeQuery = `INSERT INTO "time"("start", "end", "repeat", "employee_id")
                        VALUES (?, ?, ?, ?);`
-	findTimeByIDQuery = `SELECT "id", "start", "end", "repeat", "employee_id" FROM "time"
-                         WHERE "id" = ?;`
-	updateTimeQuery = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
+	findTimeByIDQuery       = `SELECT * FROM "time" WHERE "id" = ?;`
+	getNextTimesByDateQuery = fmt.Sprintf(` SELECT * FROM time WHERE "start" >= ? LIMIT %d OFFSET ?`, byPage)
+	updateTimeQuery         = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
 )
@@ -43,6 +48,31 @@ func FindTimeByID(tx *sql.Tx, id uint) (*Time, error) {
 	}
 
 	return t, nil
+}
+
+func GetNextTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
+	times := make([]*Time, byPage)
+	rows, err := tx.Query(getNextTimesByDateQuery, date, page*byPage)
+	if err != nil {
+		return []*Time{}, err
+	}
+	defer rows.Close()
+
+	i := 0
+	for rows.Next() {
+		times[i] = &Time{}
+		err = rows.Scan(
+			&times[i].ID, &times[i].Start, &times[i].End,
+			&times[i].Repeat, &times[i].EmployeeID,
+		)
+		if err != nil {
+			return []*Time{}, err
+		}
+
+		i++
+	}
+
+	return times[:i], nil
 }
 
 // UpdateTime updates a time in the database

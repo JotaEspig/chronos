@@ -1,4 +1,4 @@
-package employee_test
+package employeetest
 
 import (
 	"chronos/pkg/models/employee"
@@ -86,4 +86,83 @@ func TryFindInvalidEmployee(t *testing.T, tx *sql.Tx) {
 	e, err := employee.FindEmployeeByID(tx, 1)
 	assert.NotNil(t, err)
 	assert.Nil(t, e)
+}
+
+func TryUpdateValidEmployee(t *testing.T, tx *sql.Tx) {
+	// Insert a placeholder user
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+
+	// Insert an employee in the database
+	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
+	assert.Nil(t, err)
+
+	// Fetch the employee that was just created
+	var id uint
+	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
+	assert.NotEqual(t, uint(0), id)
+
+	// Try to update the employee
+	e := &employee.Employee{
+		ID:     id,
+		Type:   1,
+		UserID: 1,
+	}
+	err = employee.UpdateEmployee(tx, e)
+	assert.Nil(t, err)
+
+	// Check if the employee type has changed
+	var _type uint8
+	tx.QueryRow("SELECT \"type\" FROM \"employee\"").Scan(&_type)
+	assert.Equal(t, e.Type, _type)
+}
+
+func TryUpdateInvalidEmployee(t *testing.T, tx *sql.Tx) {
+	// Insert a placeholder user
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+
+	// Insert an employee in the database
+	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 2, 1);")
+	assert.Nil(t, err)
+
+	// Fetch the employee that was just created
+	var id uint
+	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
+	assert.NotEqual(t, uint(0), id)
+
+	// Try to update the employee
+	e := &employee.Employee{
+		ID:     id,
+		Type:   1,
+		UserID: 0,
+	}
+	err = employee.UpdateEmployee(tx, e)
+	assert.NotNil(t, err)
+
+	// Check if the employee type has changed
+	var _type uint8
+	tx.QueryRow("SELECT \"type\" FROM \"employee\"").Scan(&_type)
+	assert.NotEqual(t, e.Type, _type)
+}
+
+func TryDeleteValidEmployee(t *testing.T, tx *sql.Tx) {
+	// Insert a placeholder user
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+
+	// Insert an employee in the database
+	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
+	assert.Nil(t, err)
+
+	// Fetch the employee that was just created
+	var id uint
+	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
+	assert.NotEqual(t, uint(0), id)
+
+	// Try to delete the employee
+	err = employee.DeleteEmployeeByID(tx, id)
+	assert.Nil(t, err)
+
+	// Check if the employee still exists (it should not)
+	id = 0
+	tx.QueryRow("SELECT \"id\" FROM \"employee\";").Scan(&id)
+	assert.Equal(t, uint(0), id)
 }
