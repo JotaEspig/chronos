@@ -11,7 +11,7 @@ var (
 	createTimeQuery = `INSERT INTO "time"("start", "end", "repeat", "employee_id")
                        VALUES (?, ?, ?, ?);`
 	findTimeByIDQuery       = `SELECT * FROM "time" WHERE "id" = ?;`
-	getNextTimesByDateQuery = fmt.Sprintf(` SELECT id FROM time WHERE "start" >= ? LIMIT %d OFFSET ?`, byPage)
+	getNextTimesByDateQuery = fmt.Sprintf(` SELECT * FROM time WHERE "start" >= ? LIMIT %d OFFSET ?`, byPage)
 	updateTimeQuery         = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
@@ -61,7 +61,10 @@ func GetNextTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
 	i := 0
 	for rows.Next() {
 		times[i] = &Time{}
-		err = rows.Scan(&times[i].ID)
+		err = rows.Scan(
+			&times[i].ID, &times[i].Start, &times[i].End,
+			&times[i].Repeat, &times[i].EmployeeID,
+		)
 		if err != nil {
 			return []*Time{}, err
 		}
@@ -69,7 +72,7 @@ func GetNextTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
 		i++
 	}
 
-	return times, nil
+	return times[:i], nil
 }
 
 // UpdateTime updates a time in the database
