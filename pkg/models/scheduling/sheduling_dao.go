@@ -5,9 +5,8 @@ import "database/sql"
 var (
 	createSchedulingQuery = `INSERT INTO "scheduling"("start", "end", "user_id", "time_id")
                        VALUES (?, ?, ?, ?);`
-	findSchedulingByIDQuery = `SELECT "id", "start", "end", "user_id", "time_id" FROM "scheduling"
-                         WHERE "id" = ?;`
-	updateSchedulingQuery = `UPDATE "scheduling" SET "start" = ?, "end" = ?, "user_id" = ?, "time_id" = ?
+	findSchedulingByIDQuery = `SELECT * FROM "scheduling" WHERE "id" = ?;`
+	updateSchedulingQuery   = `UPDATE "scheduling" SET "start" = ?, "end" = ?, "user_id" = ?, "time_id" = ?
                        WHERE "id" = ?;`
 	deleteSchedulingByIDQuery = `DELETE FROM "scheduling" WHERE "id" = ?;`
 )

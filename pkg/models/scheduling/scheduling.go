@@ -3,6 +3,7 @@ package scheduling
 
 import (
 	"chronos/pkg/types"
+	"time"
 
 	"github.com/microcosm-cc/bluemonday"
 )
@@ -13,6 +14,16 @@ type Scheduling struct {
 	End    string `json:"end"`
 	UserID uint   `json:"user_id"`
 	TimeID uint   `json:"time_id"`
+}
+
+func (s *Scheduling) IsValid() bool {
+	start, err := time.Parse(time.DateTime, s.Start)
+	validations := err == nil
+	end, err := time.Parse(time.DateTime, s.End)
+	validations = validations && end.After(start)
+	validations = validations && err == nil
+
+	return validations && s.UserID != 0 && s.TimeID != 0
 }
 
 func (s *Scheduling) Sanitize(policy *bluemonday.Policy) {
