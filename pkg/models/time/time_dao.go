@@ -1,6 +1,7 @@
 package time
 
 import (
+	"chronos/pkg/common"
 	"database/sql"
 	"fmt"
 )
@@ -11,8 +12,11 @@ var (
 	createTimeQuery = `INSERT INTO "time"("start", "end", "repeat", "employee_id")
                        VALUES (?, ?, ?, ?);`
 	findTimeByIDQuery       = `SELECT * FROM "time" WHERE "id" = ?;`
-	getNextTimesByDateQuery = fmt.Sprintf(` SELECT * FROM time WHERE "start" >= ? LIMIT %d OFFSET ?`, byPage)
-	updateTimeQuery         = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
+	getNextTimesByDateQuery = fmt.Sprintf(
+		common.ReadFile("./db/sql-files/queries-with-params/get_times_by_date.sql"),
+		byPage,
+	)
+	updateTimeQuery = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
 )
