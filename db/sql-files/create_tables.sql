@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS "time" (
     PRIMARY KEY("id"),
     FOREIGN KEY("employee_id") REFERENCES "employee"("id")
 );
-CREATE INDEX "time_repeat_idx" ON "time"("repeat");
-CREATE INDEX "time_repeat&32_idx" ON "time"("repeat" & 32);
-CREATE INDEX "time_repeat&64_idx" ON "time"("repeat" & 64);
+CREATE INDEX "time_repeat_idx" ON "time" ("repeat");
+CREATE INDEX "time_repeat&32_idx" ON "time" ("repeat" & 32);
+CREATE INDEX "time_repeat&64_idx" ON "time" ("repeat" & 64);
 CREATE INDEX "time_start_strftime_idx" ON "time" (strftime('%w', "start"));
 
 CREATE TABLE IF NOT EXISTS "scheduling" (
@@ -41,3 +41,4 @@ CREATE TABLE IF NOT EXISTS "scheduling" (
     FOREIGN KEY("user_id") REFERENCES "user"("id"),
     FOREIGN KEY("time_id") REFERENCES "time"("id")
 );
+CREATE INDEX "scheduling_start_idx" ON "scheduling" ("start");
