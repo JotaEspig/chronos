@@ -11,12 +11,9 @@ var byPage uint = 10
 var (
 	createTimeQuery = `INSERT INTO "time"("start", "end", "repeat", "employee_id")
                        VALUES (?, ?, ?, ?);`
-	findTimeByIDQuery       = `SELECT * FROM "time" WHERE "id" = ?;`
-	getNextTimesByDateQuery = fmt.Sprintf(
-		common.ReadFile("./db/sql-files/queries-with-params/get_times_by_date.sql"),
-		byPage,
-	)
-	updateTimeQuery = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
+	findTimeByIDQuery   = `SELECT * FROM "time" WHERE "id" = ?;`
+	getTimesByDateQuery = "" // set in GetNextTimesByDate func
+	updateTimeQuery     = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
 )
@@ -54,9 +51,16 @@ func FindTimeByID(tx *sql.Tx, id uint) (*Time, error) {
 	return t, nil
 }
 
-func GetNextTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
+func GetTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
+	if getTimesByDateQuery == "" {
+		getTimesByDateQuery = fmt.Sprintf(
+			common.ReadFile("./db/sql-files/queries-with-params/get_times_by_date.sql"),
+			byPage,
+		)
+	}
+
 	times := make([]*Time, byPage)
-	rows, err := tx.Query(getNextTimesByDateQuery, date, page*byPage)
+	rows, err := tx.Query(getTimesByDateQuery, date, date, page*byPage)
 	if err != nil {
 		return []*Time{}, err
 	}
