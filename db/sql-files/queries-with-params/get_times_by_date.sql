@@ -1,11 +1,14 @@
--- ("repeat" & 64 AND ((unixepoch("start") - unixepoch(?)) / (86400)) == 7)
--- statement checks if date is 7 days after "start"
+-- ATTENTION: the double percents (%%) is to mean a single percent symbol,
+-- but it's double because if it's not "fmt.Sprintf" will try to interpret the
+-- percent symbol ant then the behavior is unpredictable
+
 -- Notes:
---    86400 is the amount of seconds in 7 days
---    ? will be replaced by an arbitrary date
---    %d will be replaced by amount of elements per page
---    second ? will be replaced by the page * amount of elements per page
+--    the first and the second ? will be replaced by an arbitrary date
+--    %%d will be replaced by amount of elements per page
+--    third ? will be replaced by the page * amount of elements per page
 SELECT * FROM "time"
-WHERE "repeat" & 32 == 32
-    OR ("repeat" & 64 AND ((unixepoch("start") - unixepoch(?)) / (86400)) == 7)
+WHERE ("repeat" & 32 == 32)
+    OR ("repeat" == (1 << (strftime('%%w', ?) - 1)))
+    OR (("repeat" & 64) == 64
+        AND (strftime('%%w', "start") == strftime('%%w', ?)))
 LIMIT %d OFFSET ?;
