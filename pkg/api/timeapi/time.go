@@ -93,7 +93,7 @@ func getNextTime(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	times, err := time.GetNextTimesByDate(tx, jsonStruct.Date, jsonStruct.Page)
+	times, err := time.GetTimesByDate(tx, jsonStruct.Date, jsonStruct.Page)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
 			"error": "no times found",
