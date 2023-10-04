@@ -127,7 +127,7 @@ func updateTime(c echo.Context) error {
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some time field may be missing or invalid",
+			"error": "some JSON field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
