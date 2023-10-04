@@ -12,12 +12,7 @@ import (
 var DB *sql.DB
 
 func createTables(db *sql.DB) {
-	filePath := ""
-	if common.IsTestRun() {
-		filePath += "../"
-	}
-	filePath += "db/sql-files/create_tables.sql"
-
+	filePath := "./db/sql-files/create_tables.sql"
 	query := common.ReadFile(filePath)
 	db.Exec(query)
 }

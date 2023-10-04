@@ -8,11 +8,10 @@ import (
 
 var (
 	createUserQuery         = `INSERT INTO "user"("username") VALUES (?);`
-	findUserByIDQuery       = `SELECT "id", "username" FROM "user" WHERE "id" = ?;`
-	findUserByUsernameQuery = `SELECT "id", "username" FROM "user"
-                               WHERE "username" = ?;`
-	updateUserQuery     = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
-	deleteUserByIDQuery = `DELETE FROM "user" WHERE "id" = ?;`
+	findUserByIDQuery       = `SELECT * FROM "user" WHERE "id" = ?;`
+	findUserByUsernameQuery = `SELECT * FROM "user" WHERE "username" = ?;`
+	updateUserQuery         = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
+	deleteUserByIDQuery     = `DELETE FROM "user" WHERE "id" = ?;`
 )
 
 // CreateUser creates a user in the database

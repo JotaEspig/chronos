@@ -1,15 +1,19 @@
 package time
 
-import "database/sql"
+import (
+	"chronos/pkg/common"
+	"database/sql"
+	"fmt"
+)
+
+var byPage uint = 10
 
 var (
 	createTimeQuery = `INSERT INTO "time"("start", "end", "repeat", "employee_id")
                        VALUES (?, ?, ?, ?);`
-	findTimeByIDQuery = `SELECT "id", "start", "end", "repeat", "employee_id" FROM "time"
-                         WHERE "id" = ?;`
-	getTimesQuery = `SELECT "id", "start", "end", "repeat", "employee_id" FROM "time"
-                         WHERE start >= date("now");`
-	updateTimeQuery = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
+	findTimeByIDQuery   = `SELECT * FROM "time" WHERE "id" = ?;`
+	getTimesByDateQuery = "" // set in GetNextTimesByDate func
+	updateTimeQuery     = `UPDATE "time" SET "start" = ?, "end" = ?, "repeat" = ?, "employee_id" = ?
                        WHERE "id" = ?;`
 	deleteTimeByIDQuery = `DELETE FROM "time" WHERE "id" = ?;`
 )
@@ -46,20 +50,37 @@ func FindTimeByID(tx *sql.Tx, id uint) (*Time, error) {
 
 	return t, nil
 }
-func GetTimes(tx *sql.Tx) ([]Time, error) {
-	t := &Time{}
-	rows, err := tx.Query(getTimesQuery)
-  
-  times := make([]Time, 0);
-  for rows.Next() {
-    rows.Scan(&t.ID, &t.Start, &t.End, &t.Repeat, &t.EmployeeID)
-    times = append(times, *t)
-  }
-	if err != nil {
-		return nil, err
+
+func GetTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
+	if getTimesByDateQuery == "" {
+		getTimesByDateQuery = fmt.Sprintf(
+			common.ReadFile("./db/sql-files/queries-with-params/get_times_by_date.sql"),
+			byPage,
+		)
 	}
 
-	return times, nil
+	times := make([]*Time, byPage)
+	rows, err := tx.Query(getTimesByDateQuery, date, date, page*byPage)
+	if err != nil {
+		return []*Time{}, err
+	}
+	defer rows.Close()
+
+	i := 0
+	for rows.Next() {
+		times[i] = &Time{}
+		err = rows.Scan(
+			&times[i].ID, &times[i].Start, &times[i].End,
+			&times[i].Repeat, &times[i].EmployeeID,
+		)
+		if err != nil {
+			return []*Time{}, err
+		}
+
+		i++
+	}
+
+	return times[:i], nil
 }
 
 // UpdateTime updates a time in the database

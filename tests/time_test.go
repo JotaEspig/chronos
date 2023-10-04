@@ -3,24 +3,15 @@ package tests
 import (
 	"chronos/config"
 	"chronos/pkg/models/time"
+	"chronos/tests/timetest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsValid(t *testing.T) {
-	_t := time.Time{
-		Start:      "2020-01-01 12:30:20",
-		End:        "2020-01-01 12:30:20",
-		EmployeeID: 1,
-	}
-	assert.Equal(t, true, _t.IsValid())
-	_t = time.Time{
-		Start:      "2020-01-01 1:3020",
-		End:        "2020-01-01 12:3:20",
-		EmployeeID: 1,
-	}
-	assert.Equal(t, false, _t.IsValid())
+func TestTimeIsValid(t *testing.T) {
+	timetest.TryValidTimeIsValid(t)
+	timetest.TryInvalidTimeIsValid(t)
 }
 
 func TestCreateTime(t *testing.T) {
@@ -82,6 +73,15 @@ func TestFindTimeByID(t *testing.T) {
 	assert.Equal(t, "2002-02-01", fetchedT.End)
 	assert.Equal(t, uint8(1), fetchedT.Repeat)
 	assert.Equal(t, uint(1), fetchedT.EmployeeID)
+}
+
+func TestGetNextTimes(t *testing.T) {
+	tx, err := config.DB.Begin()
+	assert.Nil(t, err)
+	defer tx.Rollback()
+
+	cleanDB(tx)
+	timetest.TryGetTimesByDate(t, tx)
 }
 
 func TestUpdateTime(t *testing.T) {
