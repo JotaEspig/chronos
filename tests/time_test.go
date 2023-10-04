@@ -75,6 +75,15 @@ func TestFindTimeByID(t *testing.T) {
 	assert.Equal(t, uint(1), fetchedT.EmployeeID)
 }
 
+func TestGetNextTimes(t *testing.T) {
+	tx, err := config.DB.Begin()
+	assert.Nil(t, err)
+	defer tx.Rollback()
+
+	cleanDB(tx)
+	timetest.TryGetTimesByDate(t, tx)
+}
+
 func TestUpdateTime(t *testing.T) {
 	tx, err := config.DB.Begin()
 	assert.Nil(t, err)

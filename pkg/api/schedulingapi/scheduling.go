@@ -3,6 +3,7 @@ package schedulingapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/scheduling"
+	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -66,6 +67,44 @@ func getScheduling(c echo.Context) error {
 
 	tMap := t.ToMap()
 	return c.JSON(http.StatusOK, tMap)
+}
+
+// getSchedulingsByDate is a scheduling controller that receives a JSON in the body that
+// contains the minimal start date and the page you want to retrieve
+// JSON should look like this:
+// {"date": "2020-01-01 12:00:00", "page": 0}
+func getSchedulingsByDate(c echo.Context) error {
+	jsonStruct := struct {
+		Date string `json:"date"`
+		Page uint   `json:"page"`
+	}{}
+	err := json.NewDecoder(c.Request().Body).Decode(&jsonStruct)
+	if err != nil || jsonStruct.Date == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "some JSON field may be missing or invalid",
+		})
+	}
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "creating of database transaction failed. Try again",
+		})
+	}
+	defer tx.Rollback()
+
+	schedulings, err := scheduling.GetSchedulingsByDate(tx, jsonStruct.Date, jsonStruct.Page)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{
+			"error": "no schedulings found",
+		})
+	}
+
+	jsonToSend := make([]types.JsonMap, len(schedulings))
+	for idx, elem := range schedulings {
+		jsonToSend[idx] = elem.ToMap()
+	}
+
+	return c.JSON(http.StatusOK, jsonToSend)
 }
 
 // updateScheduling is a scheduling controller that receives a param ("id") in the
