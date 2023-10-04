@@ -75,12 +75,10 @@ func getTime(c echo.Context) error {
 // JSON should look like this:
 // {"date": "2020-01-01 12:00:00", "page": 0}
 func getTimesByDate(c echo.Context) error {
-	jsonStruct := struct {
-		Date string `json:"date"`
-		Page uint   `json:"page"`
-	}{}
-	err := json.NewDecoder(c.Request().Body).Decode(&jsonStruct)
-	if err != nil || jsonStruct.Date == "" {
+	date := c.QueryParam("date")
+	pageStr := c.QueryParam("page")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || date == "" {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "some time field may be missing or invalid",
 		})
@@ -93,7 +91,7 @@ func getTimesByDate(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	times, err := time.GetTimesByDate(tx, jsonStruct.Date, jsonStruct.Page)
+	times, err := time.GetTimesByDate(tx, date, uint(page))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
 			"error": "no times found",
