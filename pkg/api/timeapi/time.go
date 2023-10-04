@@ -70,11 +70,11 @@ func getTime(c echo.Context) error {
 	return c.JSON(http.StatusOK, tMap)
 }
 
-// getNextTime is a time controller that receives a JSON in the body that
+// getTimesByDate is a time controller that receives a JSON in the body that
 // contains the minimal start date and the page you want to retrieve
 // JSON should look like this:
 // {"date": "2020-01-01 12:00:00", "page": 0}
-func getNextTime(c echo.Context) error {
+func getTimesByDate(c echo.Context) error {
 	jsonStruct := struct {
 		Date string `json:"date"`
 		Page uint   `json:"page"`
@@ -93,7 +93,7 @@ func getNextTime(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	times, err := time.GetNextTimesByDate(tx, jsonStruct.Date, jsonStruct.Page)
+	times, err := time.GetTimesByDate(tx, jsonStruct.Date, jsonStruct.Page)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]string{
 			"error": "no times found",
@@ -127,7 +127,7 @@ func updateTime(c echo.Context) error {
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some time field may be missing or invalid",
+			"error": "some JSON field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()

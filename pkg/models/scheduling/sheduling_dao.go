@@ -1,12 +1,19 @@
 package scheduling
 
-import "database/sql"
+import (
+	"chronos/pkg/common"
+	"database/sql"
+	"fmt"
+)
+
+var byPage uint = 10
 
 var (
 	createSchedulingQuery = `INSERT INTO "scheduling"("start", "end", "user_id", "time_id")
                        VALUES (?, ?, ?, ?);`
-	findSchedulingByIDQuery = `SELECT * FROM "scheduling" WHERE "id" = ?;`
-	updateSchedulingQuery   = `UPDATE "scheduling" SET "start" = ?, "end" = ?, "user_id" = ?, "time_id" = ?
+	findSchedulingByIDQuery   = `SELECT * FROM "scheduling" WHERE "id" = ?;`
+	getSchedulingsByDateQuery = ""
+	updateSchedulingQuery     = `UPDATE "scheduling" SET "start" = ?, "end" = ?, "user_id" = ?, "time_id" = ?
                        WHERE "id" = ?;`
 	deleteSchedulingByIDQuery = `DELETE FROM "scheduling" WHERE "id" = ?;`
 )
@@ -42,6 +49,38 @@ func FindSchedulingByID(tx *sql.Tx, id uint) (*Scheduling, error) {
 	}
 
 	return s, nil
+}
+
+func GetSchedulingsByDate(tx *sql.Tx, date string, page uint) ([]*Scheduling, error) {
+	if getSchedulingsByDateQuery == "" {
+		getSchedulingsByDateQuery = fmt.Sprintf(
+			common.ReadFile("./db/sql-files/queries-with-params/get_schedulings_by_date.sql"),
+			byPage,
+		)
+	}
+
+	schedulings := make([]*Scheduling, byPage)
+	rows, err := tx.Query(getSchedulingsByDateQuery, date, page*byPage)
+	if err != nil {
+		return []*Scheduling{}, err
+	}
+	defer rows.Close()
+
+	i := 0
+	for rows.Next() {
+		schedulings[i] = &Scheduling{}
+		err = rows.Scan(
+			&schedulings[i].ID, &schedulings[i].Start, &schedulings[i].End,
+			&schedulings[i].UserID, &schedulings[i].TimeID,
+		)
+		if err != nil {
+			return []*Scheduling{}, err
+		}
+
+		i++
+	}
+
+	return schedulings[:i], nil
 }
 
 // UpdateScheduling updates a scheduling in the database
