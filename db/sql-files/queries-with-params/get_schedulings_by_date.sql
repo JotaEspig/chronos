@@ -1,3 +1,3 @@
 SELECT * FROM "scheduling"
-WHERE "start" = ?
+WHERE strftime('%%Y-%%m-%%d', "start") = strftime('%%Y-%%m-%%d', ?)
 LIMIT %d OFFSET ?;
