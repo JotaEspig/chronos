@@ -29,6 +29,7 @@ CREATE INDEX "time_repeat_idx" ON "time" ("repeat");
 CREATE INDEX "time_repeat&32_idx" ON "time" ("repeat" & 32);
 CREATE INDEX "time_repeat&64_idx" ON "time" ("repeat" & 64);
 CREATE INDEX "time_start_strftime_idx" ON "time" (strftime('%w', "start"));
+CREATE INDEX "time_start_idx" ON "time" (strftime('%Y-%m-%d', "start"));
 
 CREATE TABLE IF NOT EXISTS "scheduling" (
     "id" INTEGER NOT NULL,
@@ -41,4 +42,4 @@ CREATE TABLE IF NOT EXISTS "scheduling" (
     FOREIGN KEY("user_id") REFERENCES "user"("id"),
     FOREIGN KEY("time_id") REFERENCES "time"("id")
 );
-CREATE INDEX "scheduling_start_idx" ON "scheduling" ("start");
+CREATE INDEX "scheduling_start_idx" ON "scheduling" (strftime('%Y-%m-%d', "start"));
