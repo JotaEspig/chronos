@@ -33,7 +33,7 @@ jobs:
         run: go build .
 
       - name: Test
-        run: go test tests/
+        run: go test ./tests/
       
       - uses: actions/upload-artifact@v2
         with:
