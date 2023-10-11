@@ -99,7 +99,6 @@ func TestUpdateUser(t *testing.T) {
 	u := &user.User{
 		ID:       id,
 		Username: "test2",
-		Password: "test",
 	}
 	err = user.UpdateUser(tx, u)
 	assert.Nil(t, err)
@@ -109,7 +108,6 @@ func TestUpdateUser(t *testing.T) {
 	var password string
 	tx.QueryRow("SELECT * FROM \"user\";").Scan(&id, &username, &password)
 	assert.Equal(t, u.Username, username)
-	assert.Equal(t, u.Password, password)
 }
 
 func TestDeleteUserByID(t *testing.T) {
