@@ -5,12 +5,25 @@ import (
 	"chronos/pkg/types"
 
 	"github.com/microcosm-cc/bluemonday"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+// InitPassword generates a bcrypt hash from password and set the password using it
+func (u *User) InitPassword() {
+	hashedPasswd, _ := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	u.Password = string(hashedPasswd)
+}
+
+// Validate validates the username and the hashed password
+func (u *User) Validate(username, password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return u.Username == username && err == nil
 }
 
 func (u *User) IsValid() bool {
