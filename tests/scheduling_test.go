@@ -27,7 +27,7 @@ func TestFindSchedulingByID(t *testing.T) {
 
 	cleanDB(tx)
 
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Nil(t, err)
@@ -54,7 +54,7 @@ func TestUpdateScheduling(t *testing.T) {
 
 	cleanDB(tx)
 
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Nil(t, err)
@@ -94,7 +94,7 @@ func TestDeleteSchedulingByID(t *testing.T) {
 
 	cleanDB(tx)
 
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Nil(t, err)

@@ -10,7 +10,7 @@ import (
 
 func TryCreateValidEmployee(t *testing.T, tx *sql.Tx) {
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 
 	// Create new employee
 	newEmployee := &employee.Employee{
@@ -66,7 +66,7 @@ func TryCreateInvalidEmployee(t *testing.T, tx *sql.Tx) {
 
 func TryFindValidEmployee(t *testing.T, tx *sql.Tx) {
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 
 	// Insert an employee in the database
 	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 2, 1);")
@@ -90,7 +90,7 @@ func TryFindInvalidEmployee(t *testing.T, tx *sql.Tx) {
 
 func TryUpdateValidEmployee(t *testing.T, tx *sql.Tx) {
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 
 	// Insert an employee in the database
 	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
@@ -118,7 +118,7 @@ func TryUpdateValidEmployee(t *testing.T, tx *sql.Tx) {
 
 func TryUpdateInvalidEmployee(t *testing.T, tx *sql.Tx) {
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 
 	// Insert an employee in the database
 	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 2, 1);")
@@ -146,7 +146,7 @@ func TryUpdateInvalidEmployee(t *testing.T, tx *sql.Tx) {
 
 func TryDeleteValidEmployee(t *testing.T, tx *sql.Tx) {
 	// Insert a placeholder user
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 
 	// Insert an employee in the database
 	_, err := tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")

@@ -17,6 +17,7 @@ func TestCreateUser(t *testing.T) {
 
 	newUser := &user.User{
 		Username: "newuser",
+		Password: "test",
 	}
 
 	err = user.CreateUser(tx, newUser)
@@ -28,12 +29,14 @@ func TestCreateUser(t *testing.T) {
 	// Fetch the user from the database by ID and check if it matches the created user.
 	var id uint
 	var username string
+	var password string
 
 	// Check if it was created
-	tx.QueryRow("SELECT \"id\", \"username\" FROM \"user\";").Scan(&id, &username)
+	tx.QueryRow("SELECT * FROM \"user\";").Scan(&id, &username, &password)
 	assert.Nil(t, err)
 	assert.Equal(t, newUser.ID, id)
 	assert.Equal(t, newUser.Username, username)
+	assert.Equal(t, newUser.Password, password)
 }
 
 func TestFindUserByID(t *testing.T) {
@@ -44,7 +47,7 @@ func TestFindUserByID(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a user in the database
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 
 	// Try to fetch the user
@@ -53,6 +56,7 @@ func TestFindUserByID(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, uint(1), u.ID)
 	assert.Equal(t, "test", u.Username)
+	assert.Equal(t, "test1", u.Password)
 }
 
 func TestFindUserByUsername(t *testing.T) {
@@ -63,7 +67,7 @@ func TestFindUserByUsername(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a user in the database
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 
 	// Try to fetch the user
@@ -72,6 +76,7 @@ func TestFindUserByUsername(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, uint(1), u.ID)
 	assert.Equal(t, "test", u.Username)
+	assert.Equal(t, "test1", u.Password)
 }
 
 func TestUpdateUser(t *testing.T) {
@@ -82,7 +87,7 @@ func TestUpdateUser(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a user in the database
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 
 	// Fetch the user that was just created
@@ -94,14 +99,17 @@ func TestUpdateUser(t *testing.T) {
 	u := &user.User{
 		ID:       id,
 		Username: "test2",
+		Password: "test",
 	}
 	err = user.UpdateUser(tx, u)
 	assert.Nil(t, err)
 
 	// Check if the user username is changed
 	var username string
-	tx.QueryRow("SELECT \"username\" FROM \"user\";").Scan(&username)
+	var password string
+	tx.QueryRow("SELECT * FROM \"user\";").Scan(&id, &username, &password)
 	assert.Equal(t, u.Username, username)
+	assert.Equal(t, u.Password, password)
 }
 
 func TestDeleteUserByID(t *testing.T) {
@@ -112,7 +120,7 @@ func TestDeleteUserByID(t *testing.T) {
 	cleanDB(tx)
 
 	// Insert a user in the database
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	assert.Nil(t, err)
 
 	// Fetch the user that was just created

@@ -10,7 +10,7 @@ import (
 )
 
 func TryGetTimesByDate(t *testing.T, tx *sql.Tx) {
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 'test1');")
 	tx.Exec("INSERT INTO \"employee\" VALUES (1, 1, 1);")
 	tx.Exec("INSERT INTO \"time\" VALUES (1, '2022-01-03', '2022-12-01', 64, 1);")
 	tx.Exec("INSERT INTO \"time\" VALUES (2, '2022-01-10', '2022-12-01', 64, 1);")
