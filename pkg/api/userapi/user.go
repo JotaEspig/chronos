@@ -4,6 +4,7 @@ package userapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/user"
+	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -17,14 +18,15 @@ func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
+	u.InitPassword()
 	if !u.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -32,7 +34,7 @@ func createUser(c echo.Context) error {
 
 	err = user.CreateUser(tx, &u)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
+		return c.JSON(http.StatusConflict, types.JsonMap{
 			"error": "some values aren't valid or are causing database conflict",
 		})
 	}
@@ -46,13 +48,13 @@ func createUser(c echo.Context) error {
 func getUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -60,7 +62,7 @@ func getUser(c echo.Context) error {
 
 	u, err := user.FindUserByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
+		return c.JSON(http.StatusNotFound, types.JsonMap{
 			"error": "user not found",
 		})
 	}
@@ -78,7 +80,7 @@ func getUser(c echo.Context) error {
 func updateUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
@@ -86,13 +88,13 @@ func updateUser(c echo.Context) error {
 	err = json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -101,7 +103,7 @@ func updateUser(c echo.Context) error {
 	u.ID = uint(id)
 	err = user.UpdateUser(tx, &u)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
+		return c.JSON(http.StatusConflict, types.JsonMap{
 			"error": "some values aren't valid or are causing database conflict",
 		})
 	}
@@ -115,13 +117,13 @@ func updateUser(c echo.Context) error {
 func deleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -129,7 +131,7 @@ func deleteUser(c echo.Context) error {
 
 	err = user.DeleteUserByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "unknown error when executing sql query",
 		})
 	}

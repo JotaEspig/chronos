@@ -4,6 +4,7 @@ package employeeapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/employee"
+	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -18,13 +19,13 @@ func createEmployee(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -32,7 +33,7 @@ func createEmployee(c echo.Context) error {
 
 	err = employee.CreateEmployee(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
+		return c.JSON(http.StatusConflict, types.JsonMap{
 			"error": "some values aren't valid or are causing database conflict",
 		})
 	}
@@ -46,13 +47,13 @@ func createEmployee(c echo.Context) error {
 func getEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -60,7 +61,7 @@ func getEmployee(c echo.Context) error {
 
 	e, err := employee.FindEmployeeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
+		return c.JSON(http.StatusNotFound, types.JsonMap{
 			"error": "employee not found",
 		})
 	}
@@ -79,7 +80,7 @@ func getEmployee(c echo.Context) error {
 func updateEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
@@ -87,13 +88,13 @@ func updateEmployee(c echo.Context) error {
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -102,7 +103,7 @@ func updateEmployee(c echo.Context) error {
 	e.ID = uint(id)
 	err = employee.UpdateEmployee(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
+		return c.JSON(http.StatusConflict, types.JsonMap{
 			"error": "some values aren't valid or are causing database conflict",
 		})
 	}
@@ -116,13 +117,13 @@ func updateEmployee(c echo.Context) error {
 func deleteEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"error": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "creating of database transaction failed. Try again",
 		})
 	}
@@ -130,7 +131,7 @@ func deleteEmployee(c echo.Context) error {
 
 	err = employee.DeleteEmployeeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
 			"error": "unknown error when executing sql query",
 		})
 	}
