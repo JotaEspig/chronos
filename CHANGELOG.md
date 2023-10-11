@@ -1,5 +1,19 @@
 # Semantic Versioning Changelog
 
+# [1.1.0](https://github.com/jotaEspig/chronos/compare/v1.0.0...v1.1.0) (2023-10-11)
+
+
+### Bug Fixes
+
+* **front:** back end merge ([dc65328](https://github.com/jotaEspig/chronos/commit/dc65328aff49c66e0c01185595f47333b6d8429b))
+* **front:** fixed week day selection request ([78a5673](https://github.com/jotaEspig/chronos/commit/78a56735b31471f14a56757676ef24ab280e843a))
+
+
+### Features
+
+* **back:** api route to list open schedules ([4fde6ea](https://github.com/jotaEspig/chronos/commit/4fde6eab34a6253a441f0a6bd74cc528ce1c19d5))
+* **front:** get shedules from api ([7a38c3b](https://github.com/jotaEspig/chronos/commit/7a38c3b4abe4941eec2ae0ae44310d5528be0702))
+
 # 1.0.0 (2023-10-11)
 
 
