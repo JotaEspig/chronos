@@ -15,7 +15,9 @@ env:
 
 permissions:
   contents: write
-    
+  pull-requests: write
+  issues: write
+  
 jobs: 
   ci-backend:
     runs-on: ubuntu-latest
