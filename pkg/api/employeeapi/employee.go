@@ -20,13 +20,13 @@ func createEmployee(c echo.Context) error {
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "some employee field may be missing or invalid",
+			"message": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -34,7 +34,7 @@ func createEmployee(c echo.Context) error {
 	err = employee.CreateEmployee(tx, &e)
 	if err != nil {
 		return c.JSON(http.StatusConflict, types.JsonMap{
-			"error": "some values aren't valid or are causing database conflict",
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -48,13 +48,13 @@ func getEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -62,7 +62,7 @@ func getEmployee(c echo.Context) error {
 	e, err := employee.FindEmployeeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, types.JsonMap{
-			"error": "employee not found",
+			"message": "employee not found",
 		})
 	}
 
@@ -81,7 +81,7 @@ func updateEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	e := employee.Employee{}
@@ -89,13 +89,13 @@ func updateEmployee(c echo.Context) error {
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "some employee field may be missing or invalid",
+			"message": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -104,7 +104,7 @@ func updateEmployee(c echo.Context) error {
 	err = employee.UpdateEmployee(tx, &e)
 	if err != nil {
 		return c.JSON(http.StatusConflict, types.JsonMap{
-			"error": "some values aren't valid or are causing database conflict",
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -118,13 +118,13 @@ func deleteEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -132,7 +132,7 @@ func deleteEmployee(c echo.Context) error {
 	err = employee.DeleteEmployeeByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "unknown error when executing sql query",
+			"message": "unknown error when executing sql query",
 		})
 	}
 

@@ -21,13 +21,13 @@ func createUser(c echo.Context) error {
 	u.InitPassword()
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "some user field may be missing or invalid",
+			"message": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -35,7 +35,7 @@ func createUser(c echo.Context) error {
 	err = user.CreateUser(tx, &u)
 	if err != nil {
 		return c.JSON(http.StatusConflict, types.JsonMap{
-			"error": "some values aren't valid or are causing database conflict",
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -49,13 +49,13 @@ func getUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -63,7 +63,7 @@ func getUser(c echo.Context) error {
 	u, err := user.FindUserByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, types.JsonMap{
-			"error": "user not found",
+			"message": "user not found",
 		})
 	}
 
@@ -81,7 +81,7 @@ func updateUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	u := user.User{}
@@ -89,13 +89,13 @@ func updateUser(c echo.Context) error {
 	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "some user field may be missing or invalid",
+			"message": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -104,7 +104,7 @@ func updateUser(c echo.Context) error {
 	err = user.UpdateUser(tx, &u)
 	if err != nil {
 		return c.JSON(http.StatusConflict, types.JsonMap{
-			"error": "some values aren't valid or are causing database conflict",
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -118,13 +118,13 @@ func deleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "id param is invalid",
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -132,7 +132,7 @@ func deleteUser(c echo.Context) error {
 	err = user.DeleteUserByID(tx, uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "unknown error when executing sql query",
+			"message": "unknown error when executing sql query",
 		})
 	}
 

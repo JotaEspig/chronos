@@ -14,30 +14,29 @@ import (
 )
 
 func login(c echo.Context) error {
-
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
-			"error": "some user field may be missing or invalid",
+			"message": "some user field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
-			"error": "creating of database transaction failed. Try again",
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 	savedUser, err := user.FindUserByUsername(tx, u.Username)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, types.JsonMap{
-			"error": "user not found",
+			"message": "user not found",
 		})
 	}
 	if !savedUser.Validate(u.Username, u.Password) {
 		return c.JSON(http.StatusUnauthorized, types.JsonMap{
-			"error": "unauthorized",
+			"message": "unauthorized",
 		})
 	}
 	claims := &types.JWTClaims{
