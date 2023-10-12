@@ -175,4 +175,3 @@ func deleteTime(c echo.Context) error {
 	tx.Commit()
 	return c.NoContent(http.StatusOK)
 }
-
