@@ -36,7 +36,7 @@ func login(c echo.Context) error {
 		})
 	}
 	if !savedUser.Validate(u.Username, u.Password) {
-		c.JSON(http.StatusUnauthorized, types.JsonMap{
+		return c.JSON(http.StatusUnauthorized, types.JsonMap{
 			"error": "unauthorized",
 		})
 	}
@@ -49,7 +49,7 @@ func login(c echo.Context) error {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString([]byte("change it after"))
+	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
 		return err
 	}
