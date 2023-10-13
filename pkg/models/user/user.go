@@ -8,10 +8,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+const (
+	TypeStudent  uint8 = 0
+	TypeEmployee uint8 = 1
+	TypeAdmin    uint8 = 2
+)
+
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
-	Type     string `json:"type"`
+	Type     uint8  `json:"type"`
 	Password string `json:"password"`
 }
 
@@ -28,7 +34,8 @@ func (u *User) Validate(username, password string) bool {
 }
 
 func (u *User) IsValid() bool {
-	return u.Username != "" && u.Password != ""
+	return u.Username != "" && u.Password != "" &&
+		(u.Type >= TypeStudent && u.Type <= TypeAdmin)
 }
 
 func (u *User) Sanitize(policy *bluemonday.Policy) {
