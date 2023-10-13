@@ -11,6 +11,7 @@ import (
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
+	Type     string `json:"type"`
 	Password string `json:"password"`
 }
 
@@ -27,7 +28,7 @@ func (u *User) Validate(username, password string) bool {
 }
 
 func (u *User) IsValid() bool {
-	return u.Username != ""
+	return u.Username != "" && u.Password != ""
 }
 
 func (u *User) Sanitize(policy *bluemonday.Policy) {
@@ -38,5 +39,6 @@ func (u *User) ToMap() types.JsonMap {
 	m := make(types.JsonMap)
 	m["id"] = u.ID
 	m["username"] = u.Username
+	m["type"] = u.Type
 	return m
 }
