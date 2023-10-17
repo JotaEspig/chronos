@@ -16,7 +16,7 @@ func needsJWT(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*types.JWTClaims)
 	return c.JSON(200, types.JsonMap{
-		"name": claims.Username,
-		"type": claims.Type,
+		"user_id": claims.UserID,
+		"type":    claims.Type,
 	})
 }
