@@ -34,7 +34,7 @@ func login(c echo.Context) error {
 			"message": "user not found",
 		})
 	}
-	if !savedUser.Validate(u.Username, u.Password) {
+	if !savedUser.ValidateLogin(u.Username, u.Password) {
 		return c.JSON(http.StatusUnauthorized, types.JsonMap{
 			"message": "unauthorized",
 		})

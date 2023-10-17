@@ -27,8 +27,8 @@ func (u *User) InitPassword() {
 	u.Password = string(hashedPasswd)
 }
 
-// Validate validates the username and the hashed password
-func (u *User) Validate(username, password string) bool {
+// ValidateLogin validates the username and the hashed password
+func (u *User) ValidateLogin(username, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	return u.Username == username && err == nil
 }
