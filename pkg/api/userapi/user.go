@@ -58,7 +58,7 @@ func getUser(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.UserID != uint(id) {
+	if claims.UserID != uint(id) && claims.Type != user.TypeAdmin {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
@@ -97,7 +97,7 @@ func updateUser(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.UserID != uint(id) {
+	if claims.UserID != uint(id) && claims.Type != user.TypeAdmin {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
@@ -141,7 +141,7 @@ func deleteUser(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.UserID != uint(id) {
+	if claims.UserID != uint(id) && claims.Type != user.TypeAdmin {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
