@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -50,12 +51,19 @@ func createUser(c echo.Context) error {
 // getUser is a user controller that receives a param ("id") in the url path
 // and return a JSON if succeeds or a status code if something went wrong
 func getUser(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+	if claims.UserID != uint(id) {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
@@ -82,12 +90,19 @@ func getUser(c echo.Context) error {
 // you must include the original value in the JSON that contains the user.
 // That's because of the way UpdateUser function works
 func updateUser(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+	if claims.UserID != uint(id) {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	u := user.User{}
 	err = json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
@@ -119,12 +134,19 @@ func updateUser(c echo.Context) error {
 // deleteUser is a user controller that receives a param ("id") in the url path
 // and a JSON in the body of the request and return a status code
 func deleteUser(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+	if claims.UserID != uint(id) {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
