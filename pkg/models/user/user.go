@@ -22,9 +22,10 @@ type User struct {
 }
 
 // InitPassword generates a bcrypt hash from password and set the password using it
-func (u *User) InitPassword() {
-	hashedPasswd, _ := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+func (u *User) InitPassword() error {
+	hashedPasswd, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	u.Password = string(hashedPasswd)
+	return err
 }
 
 // ValidateLogin validates the username and the hashed password

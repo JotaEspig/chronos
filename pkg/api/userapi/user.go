@@ -18,10 +18,14 @@ func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
-	u.InitPassword()
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "some user field may be missing or invalid",
+		})
+	}
+	if err = u.InitPassword(); err != nil {
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "password shouldn't be longer than 72 bytes",
 		})
 	}
 	tx, err := config.DB.Begin()
