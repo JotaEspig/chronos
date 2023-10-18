@@ -8,14 +8,15 @@
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
-	    <form onclick="login; return false">
+      <form onsubmit="login(event)">
 		    <h1>Login</h1>
 		    <label>Usuárion </label>
 
-		    <input type="text">
+		    <input id="username" type="text">
 		    <label>Senha </label>
-		    <input type="password">
-		    <input type"submit" value="Logar"> 
+		    <input id="password" type="password">
+		    <input type="submit" value="Logar"> 
 	    </form>
+      <script src="/js/login.js"></script>
     </body>
 </html>
