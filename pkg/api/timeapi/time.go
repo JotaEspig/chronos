@@ -19,22 +19,22 @@ func createTime(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&t)
 	t.Sanitize(config.StrictPolicy)
 	if !t.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some time field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some time field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = time.CreateTime(tx, &t)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -47,22 +47,22 @@ func createTime(c echo.Context) error {
 func getTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	t, err := time.FindTimeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "time not found",
+		return c.JSON(http.StatusNotFound, types.JsonMap{
+			"message": "time not found",
 		})
 	}
 
@@ -79,22 +79,22 @@ func getTimesByDate(c echo.Context) error {
 	pageStr := c.QueryParam("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || date == "" {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some time field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some time field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	times, err := time.GetTimesByDate(tx, date, uint(page))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "no times found",
+		return c.JSON(http.StatusNotFound, types.JsonMap{
+			"message": "no times found",
 		})
 	}
 
@@ -116,22 +116,22 @@ func getTimesByDate(c echo.Context) error {
 func updateTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	e := time.Time{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some JSON field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some JSON field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -139,8 +139,8 @@ func updateTime(c echo.Context) error {
 	e.ID = uint(id)
 	err = time.UpdateTime(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -153,22 +153,22 @@ func updateTime(c echo.Context) error {
 func deleteTime(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = time.DeleteTimeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "unknown error when executing sql query",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "unknown error when executing sql query",
 		})
 	}
 

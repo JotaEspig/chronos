@@ -34,9 +34,51 @@ function render_schedules() {
   }
 }
 
-add_schedule(2, 2, "seg", "free")
-add_schedule(0, 3, "ter", "free")
-add_schedule(0, 4, "qua", "free")
-add_schedule(0, 6, "qui", "free")
-add_schedule(0, 1, "sex", "free")
+async function request_schedules(offset, forward=true) {
+	const api = "http://localhost:8080/api/time"
+	const today = new Date((new Date()).setDate((new Date().getDate()) + offset))
+	console.log(today)
+	const year = today.getFullYear().toString()
+	const month = (today.getMonth() + 1).toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false })
+
+
+	const day = today.getDate().toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+    useGrouping: false })
+
+	const week_day = today.getDay()
+
+	const week_day_name = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', "sab"][week_day]
+
+	const date = `${year}-${month}-${day}`
+	console.log(date)
+
+	const req = await fetch(`${api}?date=${date}&page=0`)
+
+	const json = await req.json()
+	console.log(json)
+	
+	json.forEach(t => {
+		const start = (new Date(t.start)).getHours() + (new Date(t.start)).getMinutes()/60 - 9
+		const end = (new Date(t.end)).getHours() + (new Date(t.end)).getMinutes()/60 - 9 
+		const duration = end - start
+		add_schedule(start,duration, week_day_name, "free")
+	})
+
+	if (week_day_name !=="sex" && forward)
+		await request_schedules(offset + 1, forward)
+	if (week_day_name !== "seg" && !forward)
+		await request_schedules(offset - 1, forward)
+
+}
+
+(async function() {
+
+await request_schedules(0, true)
+await request_schedules(0, false)
+console.log(state)
+
 render_schedules()
+})()
