@@ -18,7 +18,6 @@ func SecretKey() string {
 			panic("SECRET_KEY IS NOT SET")
 		}
 	}
-	println(secretKey)
 	return secretKey
 }
 
