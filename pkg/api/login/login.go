@@ -41,7 +41,7 @@ func login(c echo.Context) error {
 	}
 	claims := &types.JWTClaims{
 		UserID: savedUser.ID,
-		Type:   0,
+		Type:   savedUser.Type,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},
