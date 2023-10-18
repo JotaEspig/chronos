@@ -18,22 +18,22 @@ func createScheduling(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&s)
 	s.Sanitize(config.StrictPolicy)
 	if !s.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some scheduling field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some scheduling field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = scheduling.CreateScheduling(tx, &s)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -46,22 +46,22 @@ func createScheduling(c echo.Context) error {
 func getScheduling(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	t, err := scheduling.FindSchedulingByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "scheduling not found",
+		return c.JSON(http.StatusNotFound, types.JsonMap{
+			"message": "scheduling not found",
 		})
 	}
 
@@ -78,22 +78,22 @@ func getSchedulingsByDate(c echo.Context) error {
 	pageStr := c.QueryParam("page")
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || date == "" {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some JSON field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some JSON field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	schedulings, err := scheduling.GetSchedulingsByDate(tx, date, uint(page))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "no schedulings found",
+		return c.JSON(http.StatusNotFound, types.JsonMap{
+			"message": "no schedulings found",
 		})
 	}
 
@@ -115,22 +115,22 @@ func getSchedulingsByDate(c echo.Context) error {
 func updateScheduling(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	e := scheduling.Scheduling{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some scheduling field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some scheduling field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -138,8 +138,8 @@ func updateScheduling(c echo.Context) error {
 	e.ID = uint(id)
 	err = scheduling.UpdateScheduling(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -152,22 +152,22 @@ func updateScheduling(c echo.Context) error {
 func deleteScheduling(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = scheduling.DeleteSchedulingByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "unknown error when executing sql query",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "unknown error when executing sql query",
 		})
 	}
 

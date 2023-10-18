@@ -9,7 +9,7 @@ import (
 )
 
 func TryCreateValidScheduling(t *testing.T, tx *sql.Tx) {
-	_, err := tx.Exec(`INSERT INTO "user" VALUES (1, 'test');`)
+	_, err := tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "employee" VALUES (1, 0, 1);`)
 	assert.Nil(t, err)
@@ -41,7 +41,7 @@ func TryCreateValidScheduling(t *testing.T, tx *sql.Tx) {
 }
 
 func TryCreateInvalidScheduling(t *testing.T, tx *sql.Tx) {
-	_, err := tx.Exec(`INSERT INTO "user" VALUES (1, 'test');`)
+	_, err := tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "employee" VALUES (1, 0, 1);`)
 	assert.Nil(t, err)

@@ -4,6 +4,7 @@ package employeeapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/employee"
+	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -18,22 +19,22 @@ func createEmployee(c echo.Context) error {
 	err := json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = employee.CreateEmployee(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -46,22 +47,22 @@ func createEmployee(c echo.Context) error {
 func getEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	e, err := employee.FindEmployeeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{
-			"error": "employee not found",
+		return c.JSON(http.StatusNotFound, types.JsonMap{
+			"message": "employee not found",
 		})
 	}
 
@@ -79,22 +80,22 @@ func getEmployee(c echo.Context) error {
 func updateEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	e := employee.Employee{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
 	if !e.IsValid() || err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "some employee field may be missing or invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "some employee field may be missing or invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
@@ -102,8 +103,8 @@ func updateEmployee(c echo.Context) error {
 	e.ID = uint(id)
 	err = employee.UpdateEmployee(tx, &e)
 	if err != nil {
-		return c.JSON(http.StatusConflict, map[string]string{
-			"error": "some values aren't valid or are causing database conflict",
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "some values aren't valid or are causing database conflict",
 		})
 	}
 
@@ -116,22 +117,22 @@ func updateEmployee(c echo.Context) error {
 func deleteEmployee(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "id param is invalid",
+		return c.JSON(http.StatusBadRequest, types.JsonMap{
+			"message": "id param is invalid",
 		})
 	}
 	tx, err := config.DB.Begin()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "creating of database transaction failed. Try again",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "creating of database transaction failed. Try again",
 		})
 	}
 	defer tx.Rollback()
 
 	err = employee.DeleteEmployeeByID(tx, uint(id))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "unknown error when executing sql query",
+		return c.JSON(http.StatusInternalServerError, types.JsonMap{
+			"message": "unknown error when executing sql query",
 		})
 	}
 

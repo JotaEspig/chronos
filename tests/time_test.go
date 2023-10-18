@@ -21,7 +21,7 @@ func TestCreateTime(t *testing.T) {
 
 	cleanDB(tx)
 
-	_, err = tx.Exec(`INSERT INTO "user" VALUES (1, 'test');`)
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec(`INSERT INTO "employee" VALUES (1, 0, 1);`)
 	assert.Nil(t, err)
@@ -57,7 +57,7 @@ func TestFindTimeByID(t *testing.T) {
 
 	cleanDB(tx)
 
-	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	_, err = tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Nil(t, err)
@@ -91,7 +91,7 @@ func TestUpdateTime(t *testing.T) {
 
 	cleanDB(tx)
 
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test');")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Nil(t, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Nil(t, err)
@@ -129,7 +129,7 @@ func TestDeleteTimeByID(t *testing.T) {
 
 	cleanDB(tx)
 
-	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test')")
+	tx.Exec("INSERT INTO \"user\" VALUES (1, 'test', 1, 'test1');")
 	assert.Equal(t, nil, err)
 	_, err = tx.Exec("INSERT INTO \"employee\" VALUES (1, 0, 1);")
 	assert.Equal(t, nil, err)
