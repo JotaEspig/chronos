@@ -18,6 +18,7 @@ import (
 func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
+	u.Type = 0
 	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
@@ -106,7 +107,7 @@ func updateUser(c echo.Context) error {
 	u := user.User{}
 	err = json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
-	if !u.IsValid() || err != nil {
+	if u.Username == "" || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "some user field may be missing or invalid",
 		})
