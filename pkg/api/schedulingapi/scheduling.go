@@ -3,11 +3,13 @@ package schedulingapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/scheduling"
+	"chronos/pkg/models/user"
 	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -113,12 +115,30 @@ func getSchedulingsByDate(c echo.Context) error {
 // scheduling.
 // That's because of the way UpdateScheduling function works
 func updateScheduling(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+
+	var userID uint
+	err = config.DB.QueryRow(`
+        SELECT "user"."id" FROM "user"
+        INNER JOIN "scheduling" ON "scheduling"."user_id" = "user"."id"
+        WHERE "scheduling"."id" = ?;
+        `, id).Scan(&userID)
+	if err != nil {
+		panic(err)
+	}
+
+	if claims.Type != user.TypeAdmin && claims.UserID != userID {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	e := scheduling.Scheduling{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
@@ -150,12 +170,30 @@ func updateScheduling(c echo.Context) error {
 // deleteScheduling is a scheduling controller that receives a param ("id") in the
 // url path and a JSON in the body of the request and return a status code
 func deleteScheduling(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+
+	var userID uint
+	err = config.DB.QueryRow(`
+        SELECT "user"."id" FROM "user"
+        INNER JOIN "scheduling" ON "scheduling"."user_id" = "user"."id"
+        WHERE "scheduling"."id" = ?;
+        `, id).Scan(&userID)
+	if err != nil {
+		panic(err)
+	}
+
+	if claims.Type != user.TypeAdmin && claims.UserID != userID {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
