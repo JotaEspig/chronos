@@ -4,17 +4,26 @@ package employeeapi
 import (
 	"chronos/config"
 	"chronos/pkg/models/employee"
+	"chronos/pkg/models/user"
 	"chronos/pkg/types"
 	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
 // createEmployee is an employee controller that receives a JSON in the body of
 // the request and return a status code
 func createEmployee(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
+	if claims.Type != user.TypeAdmin {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	e := employee.Employee{}
 	err := json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
@@ -45,12 +54,19 @@ func createEmployee(c echo.Context) error {
 // getEmployee is an employee controller that receives a param ("id") in the url
 // path and return a JSON if succeeds or a status code if something went wrong
 func getEmployee(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+	if claims.Type != user.TypeAdmin && claims.UserID != uint(id) {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	tx, err := config.DB.Begin()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, types.JsonMap{
@@ -78,12 +94,19 @@ func getEmployee(c echo.Context) error {
 // employee.
 // That's because of the way UpdateEmployee function works
 func updateEmployee(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "id param is invalid",
 		})
 	}
+	if claims.Type != user.TypeAdmin && claims.UserID != uint(id) {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	e := employee.Employee{}
 	err = json.NewDecoder(c.Request().Body).Decode(&e)
 	e.Sanitize(config.StrictPolicy)
@@ -115,6 +138,13 @@ func updateEmployee(c echo.Context) error {
 // deleteEmployee is an employee controller that receives a param ("id") in the
 // url path and a JSON in the body of the request and return a status code
 func deleteEmployee(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
+	if claims.Type != user.TypeAdmin {
+		return c.JSON(http.StatusForbidden, types.JsonMap{
+			"message": "you cannot access this endpoint as this user",
+		})
+	}
+
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
