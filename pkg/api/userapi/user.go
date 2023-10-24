@@ -59,7 +59,10 @@ func getUser(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.UserID != uint(id) && claims.Type != user.TypeAdmin {
+
+	canAccess := claims.UserID == uint(id) ||
+		claims.Type == user.TypeEmployee || claims.Type == user.TypeAdmin
+	if !canAccess {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})

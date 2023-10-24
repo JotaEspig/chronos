@@ -24,9 +24,19 @@ func createTime(c echo.Context) error {
 		})
 	}
 
+	var employeeID uint
+	err := config.DB.QueryRow(`
+        SELECT "id" FROM "employee"
+        WHERE "user_id" = ?;
+        `, claims.UserID).Scan(&employeeID)
+	if err != nil {
+		panic(err)
+	}
+
 	t := time.Time{}
-	err := json.NewDecoder(c.Request().Body).Decode(&t)
+	err = json.NewDecoder(c.Request().Body).Decode(&t)
 	t.Sanitize(config.StrictPolicy)
+	t.EmployeeID = employeeID
 	if !t.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "some time field may be missing or invalid",
@@ -124,7 +134,6 @@ func getTimesByDate(c echo.Context) error {
 // That's because of the way UpdateTime function works
 func updateTime(c echo.Context) error {
 	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
-
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
@@ -182,7 +191,6 @@ func updateTime(c echo.Context) error {
 // url path and a JSON in the body of the request and return a status code
 func deleteTime(c echo.Context) error {
 	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
-
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{

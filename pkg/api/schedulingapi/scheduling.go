@@ -16,9 +16,11 @@ import (
 // createScheduling is a scheduling controller that receives a JSON in the body
 // of the request and return a status code
 func createScheduling(c echo.Context) error {
+	claims := c.Get("user").(*jwt.Token).Claims.(*types.JWTClaims)
 	s := scheduling.Scheduling{}
 	err := json.NewDecoder(c.Request().Body).Decode(&s)
 	s.Sanitize(config.StrictPolicy)
+	s.UserID = claims.UserID
 	if !s.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "some scheduling field may be missing or invalid",

@@ -61,7 +61,17 @@ func getEmployee(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.Type != user.TypeAdmin && claims.UserID != uint(id) {
+
+	var userID uint
+	err = config.DB.QueryRow(`
+        SELECT "user_id" FROM "employee"
+        WHERE "id" = ?
+        `, id).Scan(&userID)
+	if err != nil {
+		panic(err)
+	}
+
+	if claims.Type != user.TypeAdmin && claims.UserID != userID {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
@@ -101,7 +111,17 @@ func updateEmployee(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.Type != user.TypeAdmin && claims.UserID != uint(id) {
+
+	var userID uint
+	err = config.DB.QueryRow(`
+        SELECT "user_id" FROM "employee"
+        WHERE "id" = ?
+        `, id).Scan(&userID)
+	if err != nil {
+		panic(err)
+	}
+
+	if claims.Type != user.TypeAdmin && claims.UserID != userID {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
