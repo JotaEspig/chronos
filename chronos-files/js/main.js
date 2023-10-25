@@ -59,11 +59,9 @@ async function request_schedules(offset, forward=true) {
 	const date = `${year}-${month}-${day}`
 	console.log(date)
 
-	const cookies = document.cookie.split(";").map(x => x.split('='))
-	const token = cookies.find(x => x[0] == "jwt")[1]
 	const req = await fetch(`${api}?date=${date}&page=0`, {
 		headers: {
-			"Authorization": "Bearer " + token
+			"Authorization": "Bearer " + token()
 		}
 	}).catch(handle_error)
 
