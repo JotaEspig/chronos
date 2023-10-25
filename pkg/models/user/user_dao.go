@@ -10,7 +10,7 @@ var (
 	createUserQuery         = `INSERT INTO "user"("username", "type", "password") VALUES (?, ?, ?);`
 	findUserByIDQuery       = `SELECT * FROM "user" WHERE "id" = ?;`
 	findUserByUsernameQuery = `SELECT * FROM "user" WHERE "username" = ?;`
-	updateUserQuery         = `UPDATE "user" SET "username" = ?, "type" = ? WHERE "id" = ?;`
+	updateUserQuery         = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
 	deleteUserByIDQuery     = `DELETE FROM "user" WHERE "id" = ?;`
 )
 
@@ -70,7 +70,7 @@ func UpdateUser(tx *sql.Tx, u *User) error {
 		return err
 	}
 
-	_, err = stmt.Exec(u.Username, u.Type, u.ID)
+	_, err = stmt.Exec(u.Username, u.ID)
 	return err
 }
 

@@ -18,6 +18,7 @@ import (
 func createUser(c echo.Context) error {
 	u := user.User{}
 	err := json.NewDecoder(c.Request().Body).Decode(&u)
+	u.Type = 0
 	u.Sanitize(config.StrictPolicy)
 	if !u.IsValid() || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
@@ -58,7 +59,10 @@ func getUser(c echo.Context) error {
 			"message": "id param is invalid",
 		})
 	}
-	if claims.UserID != uint(id) && claims.Type != user.TypeAdmin {
+
+	canAccess := claims.UserID == uint(id) ||
+		claims.Type == user.TypeEmployee || claims.Type == user.TypeAdmin
+	if !canAccess {
 		return c.JSON(http.StatusForbidden, types.JsonMap{
 			"message": "you cannot access this endpoint as this user",
 		})
@@ -106,7 +110,7 @@ func updateUser(c echo.Context) error {
 	u := user.User{}
 	err = json.NewDecoder(c.Request().Body).Decode(&u)
 	u.Sanitize(config.StrictPolicy)
-	if !u.IsValid() || err != nil {
+	if u.Username == "" || err != nil {
 		return c.JSON(http.StatusBadRequest, types.JsonMap{
 			"message": "some user field may be missing or invalid",
 		})

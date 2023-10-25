@@ -11,7 +11,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS "user_username_index" ON "user" ("username");
 CREATE TABLE IF NOT EXISTS "employee" (
     "id" INTEGER NOT NULL,
     "type" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "user_id" INTEGER UNIQUE NOT NULL,
 
     PRIMARY KEY("id"),
     FOREIGN KEY("user_id") REFERENCES "user"("id")
