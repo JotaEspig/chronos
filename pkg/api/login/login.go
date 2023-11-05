@@ -30,8 +30,8 @@ func login(c echo.Context) error {
 	defer tx.Rollback()
 	savedUser, err := user.FindUserByUsername(tx, u.Username)
 	if err != nil {
-		return c.JSON(http.StatusNotFound, types.JsonMap{
-			"message": "user not found",
+		return c.JSON(http.StatusUnauthorized, types.JsonMap{
+			"message": "unauthorized",
 		})
 	}
 	if !savedUser.ValidateLogin(u.Username, u.Password) {
@@ -41,7 +41,7 @@ func login(c echo.Context) error {
 	}
 	claims := &types.JWTClaims{
 		UserID: savedUser.ID,
-		Type:   0,
+		Type:   savedUser.Type,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
 		},
