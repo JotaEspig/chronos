@@ -5,17 +5,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/login.css">
     </head>
     <body>
-      <form onsubmit="login(event)">
-		    <h1>Login</h1>
-		    <label>Usuário</label>
-
-		    <input id="username" type="text">
-		    <label>Senha</label>
-		    <input id="password" type="password">
-		    <input type="submit" value="Logar"> 
-	    </form>
-      <script src="/js/login.js"></script>
+        <div class="centralize">
+            <section class="login">
+                <form onsubmit="login(event)">
+                    <h2>Login</h2>
+                    <label>Usuário</label>
+                    <input id="username" type="text">
+                    <label>Senha</label>
+                    <input id="password" type="password">
+                    <input type="submit" value="Logar"> 
+                </form>
+            </section>
+        </div>
+        <script src="/js/login.js"></script>
     </body>
 </html>
