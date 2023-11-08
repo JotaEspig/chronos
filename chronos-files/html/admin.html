@@ -47,21 +47,22 @@
       <script>
 	function addTime(e) {
 		e.preventDefault()
-		const get = id => document.getElementById(id).value
+		const get = id => document.getElementById(id)
 
-	  	const date = get("date")
-	  	const inicio = get("inicio")
-	  	const fim = get("fim")
+	  	const date = get("date").value
+	  	const inicio = get("inicio").value
+	  	const fim = get("fim").value
 
-	  	const seg = get("seg") === "on" ? 1 : 0 
-	  	const ter = get("ter") === "on" ? 2 : 0
-	  	const qua = get("qua") === "on" ? 4 : 0
-	  	const qui = get("qui") === "on" ? 8 : 0
-	  	const sex = get("sex") === "on" ? 16 : 0
-	  	const daily = get("daily") === "on" ? 32 : 0
-	  	const weekly = get("weekly") === "on" ? 64 : 0
+	  	const seg = get("seg").checked  ? 1 : 0 
+	  	const ter = get("ter").checked  ? 2 : 0
+	  	const qua = get("qua").checked  ? 4 : 0
+	  	const qui = get("qui").checked  ? 8 : 0
+	  	const sex = get("sex").checked  ? 16 : 0
+	  	const daily = get("daily").checked ? 32 : 0
+	  	const weekly = get("weekly").checked ? 64 : 0
 
 		const repeat = seg | ter | qua | qui | sex | daily | weekly 
+        console.log(repeat)
 
 		fetch("/api/time/add", {
 			method: "POST",

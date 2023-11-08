@@ -35,14 +35,16 @@
 				        password: password,
 				        type: 0,
                     })
-		        }).then(res => res.json()).then(res => {
-			        if (res.message) {
-				        alert("failed: " + res.message);
-				        return;
-			        }
-			        console.log(res)
-		        })
-	        }
+                })
+                .then(res => {
+                    if (res.status === 201) {
+                        alert("Boa")
+                        window.location = "/login.html"
+                    } else {
+                        alert("Deu cagada")
+                    }
+                })
+            }
         </script>
     </body>
 </html>
