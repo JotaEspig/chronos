@@ -5,17 +5,21 @@
         <title>Admin</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/global.css">
     </head>
     <body>
       <form onsubmit="addTime(event)">
 		    <h1>Adicionar Horário</h1>
+            <br>
 		    <label> Dia </label>
 		    <input id="date" type="date">
+            <br>
 		    <label> Início </label>
 		    <input id="inicio" required type="time">
+            <br>
 		    <label> Fim </label>
 		    <input id="fim" required type="time">
+            <br>
 
 
 		    <label> Repetição (Toda) </label>
@@ -40,6 +44,7 @@
 		    <br>
 		    <input id="weekly" type="checkbox">
 		    <label> Semanalmente </label>
+            <br>
 		    <input type="submit">
 			
 	    </form>
