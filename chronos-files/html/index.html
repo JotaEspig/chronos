@@ -6,12 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/utils.css">
+        <link rel="stylesheet" href="/css/navbar.css">
     </head>
     <body>
-        <div class="header">
-            <img src="/img/logoif.png" width="50px" height="50px">
-        </div>
-        <div class="time">
+        <header class="horizontal-align" style="justify-content: space-between;">
+            <img src="/img/logoif.png" width="50" height="65" alt="Logo do IFC">
+            <nav>
+                <ul class="navbar">
+                    <li><a href="#">Logout</a></li>
+                    <li><a href="/admin.html">Admin</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="time">
             <div class="hour" style="color: white" >-</div>
             <div class="hour">9h</div>
             <div class="hour">10h</div>
@@ -25,8 +33,8 @@
             <div class="hour">18h</div>
             <div class="hour">19h</div>
             <div class="hour">20h</div>
-        </div>
-        <div class="schedule">
+        </section>
+        <section class="schedule">
            <div class="schedule-week" id="seg">
             <div class="week-name">seg</div>
             <div class="schedules">
@@ -112,8 +120,8 @@
                 <hr>
             </div>
            </div>
-        </div>
-        <div class="week-selction">
+        </section>
+        <div class="week-selection">
 		<button onclick="change_week(this, 0)" class="week-option current-week"></button>
 		<button onclick="change_week(this, 1)" class="week-option"></button>
 		<button onclick="change_week(this, 2)" class="week-option"></button>
