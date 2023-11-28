@@ -6,6 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/css/global.css">
         <link rel="stylesheet" href="/css/login.css">
+        <link rel="stylesheet" href="/css/utils.css">
+
+        <script src="/js/utils.js"></script>
     </head>
     <body>
         <div class="centralize">
@@ -16,7 +19,10 @@
                     <input id="username" type="text">
                     <label for="password">Senha</label>
                     <input id="password" type="password">
-                    <input type="submit" value="Logar"> 
+                    <div class="horizontal-align">
+                        <button type="reset" onclick="redirect('/signup.html')">Cadastrar-se</button>
+                        <button type="submit">Logar</button>
+                    </div>
                 </form>
             </section>
         </div>
