@@ -50,42 +50,40 @@
 	    </form>
       <script src="/js/utils.js"></script>
       <script>
-	function addTime(e) {
-		e.preventDefault()
-		const get = id => document.getElementById(id)
+        function addTime(e) {
+            e.preventDefault();
+            const get = id => document.getElementById(id);
 
-	  	const date = get("date").value
-	  	const inicio = get("inicio").value
-	  	const fim = get("fim").value
+            const date = get("date").value;
+            const inicio = get("inicio").value;
+            const fim = get("fim").value;
 
-	  	const seg = get("seg").checked  ? 1 : 0 
-	  	const ter = get("ter").checked  ? 2 : 0
-	  	const qua = get("qua").checked  ? 4 : 0
-	  	const qui = get("qui").checked  ? 8 : 0
-	  	const sex = get("sex").checked  ? 16 : 0
-	  	const daily = get("daily").checked ? 32 : 0
-	  	const weekly = get("weekly").checked ? 64 : 0
+            const seg = get("seg").checked  ? 1 : 0;
+            const ter = get("ter").checked  ? 2 : 0;
+            const qua = get("qua").checked  ? 4 : 0;
+            const qui = get("qui").checked  ? 8 : 0;
+            const sex = get("sex").checked  ? 16 : 0;
+            const daily = get("daily").checked ? 32 : 0;
+            const weekly = get("weekly").checked ? 64 : 0;
 
-		const repeat = seg | ter | qua | qui | sex | daily | weekly 
-        console.log(repeat)
+            const repeat = seg | ter | qua | qui | sex | daily | weekly;
+            console.log(repeat);
 
-		fetch("/api/time/add", {
-			method: "POST",
-			body: JSON.stringify({
-				"employee_id": 1,
-				"start": date + " " + inicio+":00",
-				"end": date + " " + fim+":00",
-				"repeat": repeat,
-			}),
-			headers: {
-				"Authorization": "Bearer " + token()
-			},
+            fetch("/api/time/add", {
+                method: "POST",
+                body: JSON.stringify({
+                    "employee_id": 1,
+                    "start": date + " " + inicio+":00",
+                    "end": date + " " + fim+":00",
+                    "repeat": repeat,
+                }),
+                headers: {
+                    "Authorization": "Bearer " + token()
+                },
+            });
 
-		})
-		
-		console.log(seg, inicio)
-
-	}
+            console.log(seg, inicio);
+        }
       </script>
     </body>
 </html>
