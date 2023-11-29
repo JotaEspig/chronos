@@ -86,7 +86,7 @@ async function request_schedules(offset, forward=true) {
 }
 
 async function change_week(el, n) {
-	document.querySelectorAll(".week-selction button").forEach(el => el.classList.remove("current-week"));
+	document.querySelectorAll(".week-selection button").forEach(el => el.classList.remove("current-week"));
 	el.classList.add("current-week");
 
 	document.querySelectorAll(".schedule-item").forEach(e => e.remove());
