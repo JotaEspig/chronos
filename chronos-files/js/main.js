@@ -3,17 +3,31 @@ let state = {
   schedules: []
 }
 
-function add_schedule(start, duration, week_day, type) {
+function add_schedule(start, duration, week_day, day, original, type) {
   state.schedules.push({
     start: start,
     duration: duration,
     week_day: week_day,
+	day: day,
+	original: original,
     type: type 
   });
 }
 
 function sign_schedule(state) {
 	console.log(state)
+
+	const start = state.day + state.original.start.substring(10,22)
+	const end = state.day + state.original.end.substring(10,22)
+	req("/api/scheduling/add", {
+		method: "POST",
+		body: JSON.stringify({
+			start: start,
+			end: end,
+			time_id: state.original.id,
+			user_id: parseJwt(token()).user_id
+		})
+	})
 }
 
 function render_schedules() {
@@ -31,7 +45,10 @@ function render_schedules() {
     const el = document.createElement("div") 
 	el.style = `height: ${s.duration*(schedule_height/11)}px; transform: translate(0,${el_top}px)` 
 	el.classList.add("schedule-item")
-	el.onclick = (e) => sign_schedule(s)
+	if (s.type === "notfree")
+		el.classList.add("notfree")
+	if (s.type === "free")
+		el.onclick = (e) => sign_schedule(s)
 
     schedules.appendChild(el)
   }
@@ -61,21 +78,27 @@ async function request_schedules(offset, forward=true) {
 	const date = `${year}-${month}-${day}`;
 	console.log(date);
 
-	const res = await req(`api/time?date=${date}&page=0`,
-	null, handle_error);
+	const resfree = await req(`/api/time?date=${date}&page=0`, null, handle_error);
+	const resnotfree = await req(`/api/scheduling?date=${date}&page=0`, null, handle_error);
 
 
-	const json = await res.json();
-	console.log(json);
+	const freejson = await resfree.json();
+	const notfreejson = await resnotfree.json();
 	
-	if (json.message)
+	if (freejson.message)
 		window.location = "/login.html";
 
-	json.forEach(t => {
+	freejson.forEach(t => {
 		const start = (new Date(t.start)).getHours() + (new Date(t.start)).getMinutes()/60 - 9;
 		const end = (new Date(t.end)).getHours() + (new Date(t.end)).getMinutes()/60 - 9;
 		const duration = end - start;
-		add_schedule(start,duration, week_day_name, "free");
+		add_schedule(start,duration, week_day_name,date,t, "free");
+	});
+	notfreejson.forEach(t => {
+		const start = (new Date(t.start)).getHours() + (new Date(t.start)).getMinutes()/60 - 9;
+		const end = (new Date(t.end)).getHours() + (new Date(t.end)).getMinutes()/60 - 9;
+		const duration = end - start;
+		add_schedule(start,duration, week_day_name,date,t, "notfree");
 	});
 
 	if (week_day_name !=="sex" && forward)

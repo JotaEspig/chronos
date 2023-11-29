@@ -61,9 +61,18 @@ header {
    border: 3px solid black;
 }
 
+.schedule-item.notfree {
+	background-color: var(--red);
+}
+
 .schedule-item:hover {
 	border: 3px solid var(--red);
 	cursor: pointer;
+}
+
+.schedule-item.notfree:hover {
+	border: 3px solid black;
+	cursor: not-allowed;
 }
 
 .week-selection {
