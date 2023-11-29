@@ -31,6 +31,8 @@ function sign_schedule(state) {
 }
 
 function render_schedules() {
+  let i = 1
+  state.schedules.sort((st,e) => ((new Date(st.day)).getTime() + st.start)  - ((new Date(e.day)).getTime() + e.start) )
   for (let s of state.schedules) {
     const schedule_height = document.querySelector(".schedules").offsetHeight;
 
@@ -43,6 +45,7 @@ function render_schedules() {
 	
 
     const el = document.createElement("div") 
+	el.tabIndex = i 
 	el.style = `height: ${s.duration*(schedule_height/11)}px; transform: translate(0,${el_top}px)` 
 	el.classList.add("schedule-item")
 	if (s.type === "notfree")
@@ -51,6 +54,8 @@ function render_schedules() {
 		el.onclick = (e) => sign_schedule(s)
 
     schedules.appendChild(el)
+  console.log(el)
+    i++
   }
 }
 
