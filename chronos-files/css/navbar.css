@@ -1,5 +1,9 @@
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .navbar {
-	grid-row: 1;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -11,12 +15,12 @@
 }
 
 .navbar li a {
-    border-radius: 8px;
+    border-radius: 2000px;
     display: block;
     text-align: center;
     margin: auto 5px;
-    padding: 14px 16px;
-    background-color: lightgreen;
+    padding: 12px 12px;
+    background-color: var(--green);
     color: black;
     text-decoration: none;
 }
