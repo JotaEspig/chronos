@@ -5,13 +5,13 @@ function login(e) {
     const password = document.querySelector("#password").value;
 
     const api = "/api/login";
-    fetch(api, {
-        method: "POST",
+	req("/api/login", { 
+		method: "POST", 
         body: JSON.stringify({
             username: username,
             password: password
         })
-    }).then(res => res.json())
+	}).then(res => res.json())
         .then(res => {
             if (res.message) {
                 alert("failed: " + res.message);

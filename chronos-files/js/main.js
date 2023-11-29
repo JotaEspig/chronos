@@ -42,7 +42,6 @@ function handle_error(e) {
 }
 
 async function request_schedules(offset, forward=true) {
-	const api = "http://localhost:8080/api/time";
 	const today = new Date((new Date()).setDate((new Date().getDate()) + offset));
 	console.log(today);
 	const year = today.getFullYear().toString();
@@ -62,14 +61,11 @@ async function request_schedules(offset, forward=true) {
 	const date = `${year}-${month}-${day}`;
 	console.log(date);
 
-	const req = await fetch(`${api}?date=${date}&page=0`, {
-		headers: {
-			"Authorization": "Bearer " + token()
-		}
-	}).catch(handle_error);
+	const res = await req(`api/time?date=${date}&page=0`,
+	null, handle_error);
 
 
-	const json = await req.json();
+	const json = await res.json();
 	console.log(json);
 	
 	if (json.message)

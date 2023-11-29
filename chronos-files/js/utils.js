@@ -8,3 +8,17 @@ function token() {
 function redirect(location) {
     window.location = location;
 }
+
+
+async function req(route, opts, handle_error) {
+	const api = "" + route;
+
+	const req = await fetch(api, {
+		headers: {
+			"Authorization": "Bearer " + token()
+		},
+		...opts
+	}).catch(handle_error);
+
+	return req
+}
