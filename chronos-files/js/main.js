@@ -12,6 +12,10 @@ function add_schedule(start, duration, week_day, type) {
   });
 }
 
+function sign_schedule(state) {
+	console.log(state)
+}
+
 function render_schedules() {
   for (let s of state.schedules) {
     const schedule_height = document.querySelector(".schedules").offsetHeight;
@@ -20,17 +24,16 @@ function render_schedules() {
     const schedules = col.querySelector(".schedules");
 
     const week_index = ['seg', 'ter', 'qua', 'qui', 'sex'].indexOf(s.week_day);
-    console.log(week_index);
-    console.log("test");
 
     const el_top = s.start*schedule_height/11;
-    const el = `
-                    <div style="height: ${s.duration*(schedule_height/11)}px; transform: translate(0,${el_top}px)" class="schedule-item">
+	
 
-                    </div>
-                    `;
+    const el = document.createElement("div") 
+	el.style = `height: ${s.duration*(schedule_height/11)}px; transform: translate(0,${el_top}px)` 
+	el.classList.add("schedule-item")
+	el.onclick = (e) => sign_schedule(s)
 
-    schedules.innerHTML += el;
+    schedules.appendChild(el)
   }
 }
 
