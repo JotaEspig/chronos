@@ -1,21 +1,26 @@
 body {
     display: grid;
     grid-template-columns: 10ch auto;
+    grid-template-rows: 10% 85% 5%;
     font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
 }
 
 header {
-    grid-column: 1 / span 3;
+    grid-column: 1 / span 4;
     grid-row: 1;
 }
 
 .time {
     grid-column: 1;
     grid-row: 2;
+
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
 }
 
 .hour {
-    padding: 1rem 0;
     text-align: center;
 }
 
