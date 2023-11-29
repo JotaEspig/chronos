@@ -13,16 +13,16 @@ body {
 }
 
 section[class="login"] {
-    width: 300px;
+    width: 400px;
     margin: 0 auto;
-    text-align: center;
     background: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+section[class="login"] h2 {
+    text-align: center;
     color: #333;
     margin-bottom: 10px;
     font-size: 35px;
