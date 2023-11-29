@@ -4,14 +4,6 @@ body {
     background: #f4f4f4;
 }
 
-.centralize {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
 section[class="login"] {
     width: 400px;
     margin: 0 auto;

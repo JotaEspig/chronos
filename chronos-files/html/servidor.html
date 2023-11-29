@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Admin</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/servidor.css">
+        <link rel="stylesheet" href="/css/utils.css">
+    </head>
+    <body>
+        <main class="centralize">
+            <form onsubmit="addTime(event)">
+                <h1 class="title">Adicionar Horário</h1>
+                <br>
+                <label class="default"> Dia </label>
+                <input class="default" id="date" type="date">
+                <br>
+                <label class="default"> Início </label>
+                <input class="default" id="inicio" required type="time">
+                <br>
+                <label class="default"> Fim </label>
+                <input class="default" id="fim" required type="time">
+                <br>
+
+                <h3> Repetição (Toda) </h3>
+                <div class="checkbox-align">
+                    <input id="seg" type="checkbox">
+                    <label> Seg </label>
+                </div>
+                <div class="checkbox-align">
+                    <input id="ter" type="checkbox">
+                    <label> Ter </label>
+                </div>
+                <div class="checkbox-align">
+                    <input id="qua" type="checkbox">
+                    <label> Qua </label>
+                </div>
+                <div class="checkbox-align">
+                    <input id="qui" type="checkbox">
+                    <label> Qui </label>
+                </div>
+                <div class="checkbox-align">
+                    <input id="sex" type="checkbox">
+                    <label> Sex </label>
+                </div>
+                <hr>
+                <div class="checkbox-align">
+                    <input id="daily" type="checkbox">
+                    <label> Diariamente </label>
+                </div>
+                <div class="checkbox-align">
+                    <input id="weekly" type="checkbox">
+                    <label> Semanalmente </label>
+                </div>
+                <br>
+                <button type="submit">Enviar</button>
+            </form>
+        </main>
+        <script src="/js/utils.js"></script>
+        <script>
+        function addTime(e) {
+            e.preventDefault();
+            const get = id => document.getElementById(id);
+
+            const date = get("date").value;
+            const inicio = get("inicio").value;
+            const fim = get("fim").value;
+
+            const seg = get("seg").checked  ? 1 : 0;
+            const ter = get("ter").checked  ? 2 : 0;
+            const qua = get("qua").checked  ? 4 : 0;
+            const qui = get("qui").checked  ? 8 : 0;
+            const sex = get("sex").checked  ? 16 : 0;
+            const daily = get("daily").checked ? 32 : 0;
+            const weekly = get("weekly").checked ? 64 : 0;
+
+            const repeat = seg | ter | qua | qui | sex | daily | weekly;
+            console.log(date);
+            console.log(inicio);
+            console.log(fim);
+            console.log(repeat);
+
+            fetch("/api/time/add", {
+                method: "POST",
+                body: JSON.stringify({
+                    "employee_id": 1,
+                    "start": date + " " + inicio+":00",
+                    "end": date + " " + fim+":00",
+                    "repeat": repeat,
+                }),
+                headers: {
+                    "Authorization": "Bearer " + token()
+                },
+            }).then(res => {
+                    alert(res.status);
+                });
+
+            console.log(seg, inicio);
+        }
+        </script>
+    </body>
+</html>

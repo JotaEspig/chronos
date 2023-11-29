@@ -1,0 +1,53 @@
+h1[class="title"] {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 35px;
+}
+
+form {
+    width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+form input[class="default"], form label[class="default"] {
+    width: 100%;
+    padding: 5px 5px;
+    margin: 10px -5px;
+}
+
+form input[type="checkbox"], form label {
+    margin: 2px;
+}
+
+form button {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+form button:hover {
+    background: #555;
+}
+
+form .checkbox-align {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
