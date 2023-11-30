@@ -39,6 +39,7 @@ form button {
     cursor: pointer;
     border-radius: 3px;
     font-weight: bold;
+    letter-spacing: 0.05em;
     font-size: 15px;
 }
 
