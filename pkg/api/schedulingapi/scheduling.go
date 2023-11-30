@@ -34,6 +34,20 @@ func createScheduling(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
+	// check if there is already a scheduling for this Time
+	var id uint
+	err = tx.QueryRow(`
+        SELECT id FROM scheduling
+        WHERE ("time_id" = ?) AND
+        ("start" BETWEEN ? AND ?) AND ("end" BETWEEN ? AND ?);`,
+		s.TimeID, s.Start, s.End, s.Start, s.End,
+	).Scan(&id)
+	if id != 0 || err == nil {
+		return c.JSON(http.StatusConflict, types.JsonMap{
+			"message": "There's already a scheduling for this time. Select other start or end time",
+		})
+	}
+
 	err = scheduling.CreateScheduling(tx, &s)
 	if err != nil {
 		return c.JSON(http.StatusConflict, types.JsonMap{

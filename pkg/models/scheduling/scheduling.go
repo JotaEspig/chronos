@@ -22,8 +22,9 @@ func (s *Scheduling) IsValid() bool {
 	end, err := time.Parse(time.DateTime, s.End)
 	validations = validations && end.After(start)
 	validations = validations && err == nil
+	validations = validations && s.UserID != 0 && s.TimeID != 0
 
-	return validations && s.UserID != 0 && s.TimeID != 0
+	return validations
 }
 
 func (s *Scheduling) Sanitize(policy *bluemonday.Policy) {
