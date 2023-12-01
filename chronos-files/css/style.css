@@ -65,7 +65,7 @@ header {
 }
 
 .schedule-item:hover {
-	border: 3px solid var(--red);
+	box-shadow: var(--shadow);
 	cursor: pointer;
 }
 
