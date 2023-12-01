@@ -28,8 +28,28 @@ header {
     grid-row: 2;
     display: grid;
     grid-template-columns: auto auto auto auto auto;
+    position: relative;
 }
 
+@keyframes week-transition-original {
+	from {
+		left: 0%;	
+		opacity: 100%;
+	}
+
+	to {
+		left: -100%;
+		opacity: 0%;
+	}
+}
+@keyframes week-transition-new {
+	from {
+		left: 100%;
+	}
+	to {
+		left: 0%;
+	}
+}
 .week-name {
     text-align: center;
 }

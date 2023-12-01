@@ -1,6 +1,7 @@
 
 let state = {
-  schedules: []
+  schedules: [],
+  week: 0
 }
 
 function add_schedule(start, duration, week_day, day, original, type) {
@@ -113,9 +114,30 @@ async function request_schedules(offset, forward=true) {
 }
 
 async function change_week(el, n) {
+	let reverse = true
+	if (n > state.week) {
+		reverse = false
+	}
+
 	document.querySelectorAll(".week-selection button").forEach(el => el.classList.remove("current-week"));
 	el.classList.add("current-week");
+	const schedule = document.querySelector(".schedule")
+	const schedule_new = schedule.cloneNode(true)
 
+	document.body.appendChild(schedule_new)
+
+	schedule_new.style.animation = "week-transition-new ease-in-out 1s"
+	schedule.style.animation = "week-transition-original ease-in-out  1s"
+
+	if (reverse) {
+		schedule.style.animationDirection = "reverse"
+		schedule_new.style.animationDirection = "reverse"
+	}
+
+	state.week = n
+
+	schedule.onanimationend = (e) => e.target.remove()
+/*
 	document.querySelectorAll(".schedule-item").forEach(e => e.remove());
 
 	state.schedules = [];
@@ -123,6 +145,7 @@ async function change_week(el, n) {
 	await request_schedules(7*n, true);
 	await request_schedules(7*n, false);
 	render_schedules();
+	*/
 
 }
 
