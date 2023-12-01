@@ -85,8 +85,14 @@ header {
     background-color: gray;
     border-radius: 2000px;
     margin: 0 4rem;
-    height: 15px;
-    width: 15px;
+    height: 17px;
+    width: 17px;
+    border: 2px solid rgba(0,0,0,1);
+    cursor: pointer;
+}
+
+.week-option:hover {
+	box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.51);
 }
 
 .current-week {
