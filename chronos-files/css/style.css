@@ -57,7 +57,7 @@ header {
 .schedule-week {
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 8% 90%;
 }
 
 .schedules {
