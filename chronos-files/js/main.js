@@ -4,6 +4,11 @@ let state = {
   week: 0
 }
 
+function logout() {
+	document.cookie = "jwt=X; expires=Thu, 18 Dec 2013 12:00:00 UTC;"
+	window.location.reload()
+}
+
 function add_schedule(start, duration, week_day, day, original, type) {
   state.schedules.push({
     start: start,
