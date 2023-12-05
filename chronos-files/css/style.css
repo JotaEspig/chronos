@@ -149,6 +149,15 @@ header img {
 	align-items: center;
 }
 
+.week-selection label {
+    font-size: 0.89rem;
+    font-weight: 300;
+}
+button.current-week + label {
+	font-weight: 400;
+}
+
+
 .week-option {
     background-color: gray;
     border-radius: 2000px;
