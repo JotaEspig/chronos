@@ -97,18 +97,26 @@ header {
 .week-selection {
     display: flex;
     flex-flow: row nowrap;
-    grid-column: 1 / span 3;
+    grid-column: 2 / span 3;
     grid-row: 3;
+    width: 90%;
+    justify-content: space-between;
+}
+
+.week-selection div {
+	display: flex;
+	align-items: center;
 }
 
 .week-option {
     background-color: gray;
     border-radius: 2000px;
-    margin: 0 4rem;
     height: 17px;
     width: 17px;
     border: 2px solid rgba(0,0,0,1);
     cursor: pointer;
+
+    margin-right: 0.5rem;
 }
 
 .week-option:hover {
