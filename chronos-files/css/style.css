@@ -3,6 +3,7 @@ body {
     grid-template-columns: 10ch auto;
     grid-template-rows: 10% 85% 5%;
     height: 100vh;
+    overflow-x: hidden;
 }
 
 header {
