@@ -21,8 +21,8 @@ function add_schedule(start, duration, week_day, day, original, type) {
 }
 
 function sign_schedule(state) {
-	console.log(state)
-	
+	if (!window.confirm("Tem certeza que desejas agendar esse horário?"))
+		return
 	const start_time = state.start + 9
 	const end_time = state.start + 9 + state.duration 
 
