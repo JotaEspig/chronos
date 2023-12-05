@@ -8,6 +8,14 @@ body {
 header {
     grid-column: 1 / span 4;
     grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+header img {
+	max-height: 100%;
 }
 
 .time {
@@ -52,6 +60,8 @@ header {
 }
 .week-name {
     text-align: center;
+    font-size: 1.2rem;
+    font-weight: 300;
 }
 
 .schedule-week {
@@ -75,33 +85,30 @@ header {
    width: 100px;
    background-color: var(--green);
    position: absolute;
-   border-left: 3px solid black;
-   border-right: 3px solid black;
    box-sizing: border-box;
 }
 
+
 .schedule-item:first-of-type {
-   border-top: 3px solid black;
 }
 
 .schedule-item:last-child {
    border-radius: 0 0 25px 25px;
-   border-bottom: 3px solid black;
 }
 
 .schedule-item.notfree {
 	background-color: var(--red);
+   	border-radius: 0 0 25px 25px;
 }
 
 .schedule-item:hover {
 	box-shadow: var(--shadow);
 	cursor: pointer;
-   	border-bottom: 3px solid black;
-   	border-top: 3px solid black;
+   	border-bottom: 1px solid black;
+   	border-top: 1px solid black;
 }
 
 .schedule-item.notfree:hover {
-	border: 3px solid black;
 	cursor: not-allowed;
 }
 
@@ -122,12 +129,14 @@ header {
 .week-option {
     background-color: gray;
     border-radius: 2000px;
-    height: 17px;
-    width: 17px;
-    border: 2px solid rgba(0,0,0,1);
+    height: 10px;
+    width: 10px;
+    border: none;
     cursor: pointer;
 
     margin-right: 0.5rem;
+
+    outline: none;
 }
 
 .week-option:hover {
@@ -136,4 +145,6 @@ header {
 
 .current-week {
     background-color: var(--green);
+    height: 15px;
+    width: 15px;
 }
