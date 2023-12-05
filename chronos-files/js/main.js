@@ -4,6 +4,8 @@ let state = {
   week: 0
 }
 
+const empty_schedule = document.querySelector(".schedule").cloneNode(true)
+
 function logout() {
 	document.cookie = "jwt=X; expires=Thu, 18 Dec 2013 12:00:00 UTC;"
 	window.location.reload()
@@ -23,6 +25,7 @@ function add_schedule(start, duration, week_day, day, original, type) {
 function sign_schedule(state) {
 	if (!window.confirm("Tem certeza que desejas agendar esse horário?"))
 		return
+
 	const start_time = state.start + 9
 	const end_time = state.start + 9 + state.duration 
 
@@ -49,14 +52,14 @@ function sign_schedule(state) {
 	})
 }
 
-function render_schedules() {
+function render_schedules(container=document) {
   let i = 1
   state.schedules.sort((st,e) => ((new Date(st.day)).getTime() + st.start)  - ((new Date(e.day)).getTime() + e.start) )
   for (let s of state.schedules) {
     const schedule_height = document.querySelector(".schedules").offsetHeight;
 
-    const col = document.getElementById(s.week_day);
-    const schedules = col.querySelector(".schedules");
+    const col = container.querySelector("#" + s.week_day) 
+    const schedules = col.querySelector(".schedules") 
 
     const week_index = ['seg', 'ter', 'qua', 'qui', 'sex'].indexOf(s.week_day);
 
@@ -65,7 +68,7 @@ function render_schedules() {
 
     const el = document.createElement("div") 
 	el.tabIndex = i 
-	el.style = `height: ${s.duration*(schedule_height/11)}px; transform: translate(0,${el_top}px)` 
+	el.style = `height: ${s.duration*(schedule_height/11) + 5}px; transform: translate(0,${el_top}px)` 
 	el.classList.add("schedule-item")
 	if (s.type === "notfree")
 		el.classList.add("notfree")
@@ -137,29 +140,33 @@ async function request_schedules(offset, forward=true) {
 }
 
 async function change_week(el, n) {
-	let reverse = true
-	if (n > state.week) {
-		reverse = false
-	}
+	const reverse = n < state.week 
 
 	document.querySelectorAll(".week-selection button").forEach(el => el.classList.remove("current-week"));
 	el.classList.add("current-week");
-	const schedule = document.querySelector(".schedule")
-	const schedule_new = schedule.cloneNode(true)
+
+	state.schedules = [];
+
+	await request_schedules(7*n, true);
+	await request_schedules(7*n, false);
+
+	const schedule = document.querySelector(".schedule:last-of-type")
+	const schedule_new = empty_schedule.cloneNode(true)
+	await render_schedules(schedule_new)
 
 	document.body.appendChild(schedule_new)
 
-	schedule_new.style.animation = "week-transition-new ease-in-out 1s"
-	schedule.style.animation = "week-transition-original ease-in-out  1s"
+	schedule_new.style.animation = "week-transition-new ease-in-out 1s forwards"
+	schedule.style.animation = "week-transition-original ease-in-out 1s forwards"
 
 	if (reverse) {
-		schedule.style.animationDirection = "reverse"
-		schedule_new.style.animationDirection = "reverse"
+		schedule_new.style.animation = "week-transition-new-rev ease-in-out 1s forwards"
+		schedule.style.animation = "week-transition-original-rev ease-in-out 1s forwards"
 	}
 
 	state.week = n
 
-	schedule.onanimationend = (e) => e.target.remove()
+	//schedule.onanimationend = (e) => e.target.remove()
 /*
 	document.querySelectorAll(".schedule-item").forEach(e => e.remove());
 
@@ -167,11 +174,8 @@ async function change_week(el, n) {
 
 	await request_schedules(7*n, true);
 	await request_schedules(7*n, false);
-	render_schedules();
-	*/
-
+	render_schedules(); */ 
 }
-
 
 (async function() {
 
