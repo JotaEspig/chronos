@@ -184,4 +184,8 @@ await request_schedules(0, false);
 console.log(state);
 
 render_schedules();
+const admin = document.querySelector("#admin")
+if (parseJwt(token()).type !== 0) {
+	admin.style.display = "block"
+}
 })();
