@@ -22,9 +22,22 @@ function add_schedule(start, duration, week_day, day, original, type) {
 
 function sign_schedule(state) {
 	console.log(state)
+	
+	const start_time = state.start + 9
+	const end_time = state.start + 9 + state.duration 
 
-	const start = state.day + state.original.start.substring(10,22)
-	const end = state.day + state.original.end.substring(10,22)
+	const start_hour = `${ start_time < 1 ? "0" : ""}`+String(Math.floor(start_time))
+	const end_hour = `${ end_time < 1 ? "0" : ""}`+String(Math.floor(end_time))
+
+	const start_minutes = (start_time % 1 * 60)
+	const end_minutes = (end_time % 1 * 60)
+
+	const str_start_minutes = ( start_minutes < 10 ? "0" : "") + String(start_minutes)
+	const str_end_minutes = ( end_minutes < 10 ? "0" : "") + String(end_minutes)
+
+
+	const start = state.day + ` ${start_hour}:${str_start_minutes}:00`
+	const end = state.day + ` ${end_hour}:${str_end_minutes}:00`
 	req("/api/scheduling/add", {
 		method: "POST",
 		body: JSON.stringify({
@@ -103,7 +116,12 @@ async function request_schedules(offset, forward=true) {
 		const start = (new Date(t.start)).getHours() + (new Date(t.start)).getMinutes()/60 - 9;
 		const end = (new Date(t.end)).getHours() + (new Date(t.end)).getMinutes()/60 - 9;
 		const duration = end - start;
-		add_schedule(start,duration, week_day_name,date,t, "free");
+
+		const duration_split = 1/2 // 30 minutes
+
+		for (let i=start; i<=start+duration; i+=duration_split) {
+			add_schedule(i,duration_split, week_day_name,date,t, "free");
+		}
 	});
 	notfreejson.forEach(t => {
 		const start = (new Date(t.start)).getHours() + (new Date(t.start)).getMinutes()/60 - 9;

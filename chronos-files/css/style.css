@@ -67,7 +67,6 @@ header {
     align-items: center;
 }
 
-
 .schedule hr {
     width: 100%;
 }
@@ -76,8 +75,18 @@ header {
    width: 100px;
    background-color: var(--green);
    position: absolute;
+   border-left: 3px solid black;
+   border-right: 3px solid black;
+   box-sizing: border-box;
+}
+
+.schedule-item:first-of-type {
+   border-top: 3px solid black;
+}
+
+.schedule-item:last-child {
    border-radius: 0 0 25px 25px;
-   border: 3px solid black;
+   border-bottom: 3px solid black;
 }
 
 .schedule-item.notfree {
@@ -87,6 +96,8 @@ header {
 .schedule-item:hover {
 	box-shadow: var(--shadow);
 	cursor: pointer;
+   	border-bottom: 3px solid black;
+   	border-top: 3px solid black;
 }
 
 .schedule-item.notfree:hover {
