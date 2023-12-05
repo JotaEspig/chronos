@@ -9,12 +9,15 @@
         <link rel="stylesheet" href="/css/utils.css">
 
         <script src="/js/utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
         <div class="centralize">
             <section class="login">
-                <form onsubmit="sign(event)">
+                <form id="form" onsubmit="sign(event)">
                     <h2>Cadastro</h2>
+                    <span id="error" style="color: red;"></span>
+                    <br>
                     <label for="username">Usuário</label>
                     <input id="username" type="text">
                     <label for="password">Senha</label>
@@ -43,15 +46,36 @@
 				        password: password,
 				        type: 0,
                     })
-                })
-                .then(res => {
-                    if (res.status === 201) {
-                        alert("Boa")
-                        window.location = "/login.html"
-                    } else {
-                        alert("Deu cagada")
-                    }
-                })
+                }).then(res => {
+                        if (res.status === 201) {
+                            Swal.fire({
+                                position: "top-end",
+                                title: "Sucesso",
+                                icon: "success",
+                                text: "Você será redirecionado para o login",
+                                width: 400,
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            setInterval(() => {window.location = "/login.html";}, 2100);
+                        } else {
+                            document.getElementById("form").reset();
+                            document.getElementById("username").focus();
+
+                            Swal.fire({
+                                position: "top-end",
+                                title: "Erro",
+                                icon: "error",
+                                text: "Valores inválidos",
+                                width: 400,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setInterval(() => {
+                                document.getElementById("error").innerHTML = "Valores inválidos";
+                            }, 1500);
+                        }
+                    })
             }
         </script>
     </body>
