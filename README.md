@@ -29,6 +29,12 @@ go mod download
 
 ### Executing program
 
+First you will need to set a secret key for the JWT authentication module.
+This is how you do it:
+```bash
+export SECRET_KEY="a-very-powerful-secret-key"
+```
+
 Run (it may take a while to compile in the first time):
 ```bash
 go run .

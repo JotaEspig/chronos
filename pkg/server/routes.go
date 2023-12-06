@@ -6,17 +6,18 @@ import (
 )
 
 func (s *Server) setRoute(route types.Route) {
+	gp := s.echo.Group(route.Path, route.Middlewares...)
 	switch route.Method {
 	case types.MethodGET:
-		s.echo.GET(route.Path, route.Fn)
+		gp.GET("", route.Fn)
 	case types.MethodPOST:
-		s.echo.POST(route.Path, route.Fn)
+		gp.POST("", route.Fn)
 	case types.MethodPUT:
-		s.echo.PUT(route.Path, route.Fn)
+		gp.PUT("", route.Fn)
 	case types.MethodDELETE:
-		s.echo.DELETE(route.Path, route.Fn)
+		gp.DELETE("", route.Fn)
 	case types.MethodOPTIONS:
-		s.echo.OPTIONS(route.Path, route.Fn)
+		gp.OPTIONS("", route.Fn)
 	}
 }
 

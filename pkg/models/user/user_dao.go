@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	createUserQuery         = `INSERT INTO "user"("username") VALUES (?);`
+	createUserQuery         = `INSERT INTO "user"("username", "type", "password") VALUES (?, ?, ?);`
 	findUserByIDQuery       = `SELECT * FROM "user" WHERE "id" = ?;`
 	findUserByUsernameQuery = `SELECT * FROM "user" WHERE "username" = ?;`
 	updateUserQuery         = `UPDATE "user" SET "username" = ? WHERE "id" = ?;`
@@ -21,7 +21,7 @@ func CreateUser(tx *sql.Tx, user *User) error {
 		return err
 	}
 
-	res, err := stmt.Exec(user.Username)
+	res, err := stmt.Exec(user.Username, user.Type, user.Password)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,8 @@ func CreateUser(tx *sql.Tx, user *User) error {
 // FindUserByID retrieves a user from the database by its ID
 func FindUserByID(tx *sql.Tx, id uint) (*User, error) {
 	u := &User{}
-	err := tx.QueryRow(findUserByIDQuery, id).Scan(&u.ID, &u.Username)
+	err := tx.QueryRow(findUserByIDQuery, id).
+		Scan(&u.ID, &u.Username, &u.Type, &u.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +54,8 @@ func FindUserByID(tx *sql.Tx, id uint) (*User, error) {
 // FindUserByUsername retrieves a user from the database by its username
 func FindUserByUsername(tx *sql.Tx, username string) (*User, error) {
 	u := &User{}
-	err := tx.QueryRow(findUserByUsernameQuery, username).Scan(&u.ID, &u.Username)
+	err := tx.QueryRow(findUserByUsernameQuery, username).
+		Scan(&u.ID, &u.Username, &u.Type, &u.Password)
 	if err != nil {
 		return nil, err
 	}

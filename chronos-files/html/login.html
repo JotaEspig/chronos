@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/global.css">
+        <link rel="stylesheet" href="/css/login.css">
+        <link rel="stylesheet" href="/css/utils.css">
+
+        <script src="/js/utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <div class="centralize">
+            <section class="login">
+                <form id="form" onsubmit="login(event)">
+                    <h2>Login</h2>
+                    <span id="error" style="color: red;"></span>
+                    <br>
+                    <label for="username">Usuário</label>
+                    <input id="username" type="text">
+                    <label for="password">Senha</label>
+                    <input id="password" type="password">
+                    <div class="horizontal-align">
+                        <button type="reset" onclick="redirect('/signup.html')">
+                            Página de cadastro
+                        </button>
+                        <button type="submit">Logar</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <script src="/js/login.js"></script>
+    </body>
+</html>

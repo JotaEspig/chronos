@@ -1,0 +1,13 @@
+.horizontal-align {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.centralize {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}

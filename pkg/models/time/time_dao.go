@@ -60,7 +60,7 @@ func GetTimesByDate(tx *sql.Tx, date string, page uint) ([]*Time, error) {
 	}
 
 	times := make([]*Time, byPage)
-	rows, err := tx.Query(getTimesByDateQuery, date, date, date, page*byPage)
+	rows, err := tx.Query(getTimesByDateQuery, date, date, date, date, page*byPage)
 	if err != nil {
 		return []*Time{}, err
 	}

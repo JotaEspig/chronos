@@ -1,0 +1,60 @@
+body {
+    all: initial;
+    background: #f4f4f4;
+}
+
+section[class="login"] {
+    width: 400px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section[class="login"] h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 35px;
+}
+
+section[class="login"] input {
+    width: 100%;
+    padding: 5px 5px;
+    margin: 10px -5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+section[class="login"] input[type="text"],
+section[class="login"] input[type="password"] {
+    outline: none;
+    font-size: 20px;
+}
+
+section[class="login"] button {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+section[class="login"] button:hover {
+    background: #555;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    text-decoration: underline;
+}

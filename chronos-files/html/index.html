@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
-        <title>UEPA</title>
+        <title>Agendamento</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/global.css">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/utils.css">
+        <link rel="stylesheet" href="/css/navbar.css">
     </head>
     <body>
-        <div class="header">
-            <img src="/img/logoif.png" width="50px" height="50px">
-        </div>
-        <div class="time">
-            <div class="hour" style="color: white" >-</div>
+	    <header> 
+            <img src="/img/logoif.png" alt="Logo do IFC">
+            <nav>
+                <ul class="navbar">
+                    <li><a href="#" onclick=logout()>Logout</a></li>
+                    <li id="admin" style="display: none" ><a href="/servidor.html">Área do servidor</a></li>
+                </ul>
+            </nav>
+        </header>
+        <section class="time">
+            <div class="hour"></div>
             <div class="hour">9h</div>
             <div class="hour">10h</div>
             <div class="hour">11h</div>
@@ -24,101 +33,118 @@
             <div class="hour">18h</div>
             <div class="hour">19h</div>
             <div class="hour">20h</div>
+        </section>
+        <section class="schedule">
+            <div class="schedule-week" id="seg">
+                <div class="week-name">Seg</div>
+                <div class="schedules">
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+            </div>
+            <div class="schedule-week" id="ter">
+                <div class="week-name">Ter</div>
+                <div class="schedules">
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+            </div>
+            <div class="schedule-week" id="qua">
+                <div class="week-name">Qua</div>
+                <div class="schedules">
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+            </div>
+            <div class="schedule-week" id="qui">
+                <div class="week-name">Qui</div>
+                <div class="schedules">
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+            </div>
+            <div class="schedule-week" id="sex">
+                <div class="week-name">Sex</div>
+                <div class="schedules">
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                    <hr>
+                </div>
+            </div>
+        </section>
+        <div class="week-selection">
+		<div>
+			<button onclick="change_week(this, 0)" class="week-option current-week"></button>
+			<label> Semana Atual </label>
+		</div>
+
+		<div>
+		<button onclick="change_week(this, 1)" class="week-option"></button>
+			<label> Próxima Semana </label>
+		</div>
+		<div>
+			<button onclick="change_week(this, 2)" class="week-option"></button>
+			<label> 2 Semanas Depois </label>
+		</div>
+		<div>
+			<button onclick="change_week(this, 3)" class="week-option"></button>
+			<label> 3 Semanas Depois</label>
+		</div>
+		<div>
+			<button onclick="change_week(this, 4)" class="week-option"></button>
+			<label> 4 Semanas Depois</label>
+		</div>
         </div>
-        <div class="schedule">
-           <div class="schedule-week" id="seg">
-            <div class="week-name">seg</div>
-            <div class="schedules">
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-            </div>
-           </div>
-           <div class="schedule-week" id="ter">
-            <div class="week-name">ter</div>
-            <div class="schedules">
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-            </div>
-            </div>
-           <div class="schedule-week" id="qua">
-            <div class="week-name">qua</div>
-            <div class="schedules">
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-            </div>
-           </div>
-           <div class="schedule-week" id="qui">
-            <div class="week-name">qui</div>
-            <div class="schedules">
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-            </div>
-           </div>
-           <div class="schedule-week" id="sex">
-            <div class="week-name">sex</div>
-            <div class="schedules">
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-                <hr>
-            </div>
-           </div>
-        </div>
-        <div class="week-selction">
-            <div class="week-option current-week"></div>
-            <div class="week-option"></div>
-            <div class="week-option"></div>
-            <div class="week-option"></div>
-            <div class="week-option"></div>
-        </div>
+        <script src="/js/utils.js"></script>
         <script src="/js/main.js"></script>
     </body>
 </html>
