@@ -1,5 +1,59 @@
 # Semantic Versioning Changelog
 
+# [1.2.0](https://github.com/jotaEspig/chronos/compare/v1.1.0...v1.2.0) (2023-12-06)
+
+
+### Bug Fixes
+
+* **api:** improved authorization checks ([41f9cd1](https://github.com/jotaEspig/chronos/commit/41f9cd14279c8087ef9d4ba49f06e846a84dfaac))
+* **frontend:** somethings ([d7f5233](https://github.com/jotaEspig/chronos/commit/d7f52331febd01492e94e90b2827741a5e8e106a))
+* **front:** log request error ([150f757](https://github.com/jotaEspig/chronos/commit/150f757155aac480cdd4c4d739fc272fec671b83))
+* **front:** send authorization tokens ([7b1b2c2](https://github.com/jotaEspig/chronos/commit/7b1b2c2dd1b5ca04dc3f07fd0ddacc63a049aa61))
+* jwt claims struct type field is uint8 now ([d30acdd](https://github.com/jotaEspig/chronos/commit/d30acdd93dc770ce5c896bddcb8080065bcb9bd3))
+* **login.css:** removed dumb margin-top ([8971f3d](https://github.com/jotaEspig/chronos/commit/8971f3d31d0d9e972e16ead77f0b92deb5d8a97f))
+* **login:** minor errors ([9cd79c9](https://github.com/jotaEspig/chronos/commit/9cd79c912e39cee46e0999391c6d7c3175c8b287))
+* **login:** not showing if user exists or not ([34c4d49](https://github.com/jotaEspig/chronos/commit/34c4d4937c2d50217cd229505c6bdf6f6ab79c20))
+* **login:** now claims has correct type ([c65bebc](https://github.com/jotaEspig/chronos/commit/c65bebc431a2dde095f0a345fd7bfb1f4798bd42))
+* **main.js:** change week buttons ([cebce5b](https://github.com/jotaEspig/chronos/commit/cebce5b1080f4ef9a1d2e8cc65bf9c13eb75e193))
+* page title ([479f472](https://github.com/jotaEspig/chronos/commit/479f47209623cdaa842a00157f0d807373faca2a))
+* preventing user to try to set its own type ([6be79f4](https://github.com/jotaEspig/chronos/commit/6be79f4d0aa7e61d882a44c8d02f3bbe811c43eb))
+* **schedulingapi:** preventing adding multiples scheduling to the same time ([2c09790](https://github.com/jotaEspig/chronos/commit/2c0979086a0d1c63d6f02d0c90d1aeaf8d75d222))
+* **time_dao:** query ([ce7d2d8](https://github.com/jotaEspig/chronos/commit/ce7d2d8bf13a63a3e584a5ab42890c129e0f56dc))
+* u -> savedUser ([91ff8b6](https://github.com/jotaEspig/chronos/commit/91ff8b6ad15183a34c74235a2d3368a2e71c7a51))
+* **user_dao.go:** don't update password ([f7b83b7](https://github.com/jotaEspig/chronos/commit/f7b83b7005f3813a9f74ac0d4c6751a96cbf09b7))
+* **user:** type is a uint8 between 0 and 2 ([3016c3a](https://github.com/jotaEspig/chronos/commit/3016c3ad04e510b953b0566d80bb761c74c19029))
+* using jwt secret key as env variable ([2a06cd3](https://github.com/jotaEspig/chronos/commit/2a06cd3ab172e88afe16dd5802a98cff130de79d))
+
+
+### Features
+
+* add redirect buttons to signup and login ([7ba1012](https://github.com/jotaEspig/chronos/commit/7ba10125045c35faa0ed3e0d8038c124cf6678c8))
+* **config:** added jwt middleware ([99299df](https://github.com/jotaEspig/chronos/commit/99299df91b596d29ee054f289bffcc37dc23cf85))
+* **create_tables.sql:** added password in user table ([99849db](https://github.com/jotaEspig/chronos/commit/99849dbc8789596bdb6e4e8331262f3bdc266560))
+* **create_tables.sql:** added type field ([5af6157](https://github.com/jotaEspig/chronos/commit/5af6157fc0862b700f2550efcff914e2a8528a39))
+* **employeeapi:** add authentication ([4cc14d0](https://github.com/jotaEspig/chronos/commit/4cc14d084dd92b1f5d250ea3e37149e114867b58))
+* **front:** add admin page ([e5f8bbb](https://github.com/jotaEspig/chronos/commit/e5f8bbb235d399077e0b32071b0fbf82289b8dea))
+* **front:** add signup page ([5fc47eb](https://github.com/jotaEspig/chronos/commit/5fc47ebc97182124eaa407c3b4a1644bc0cf523d))
+* **front:** added login ([d6a52ba](https://github.com/jotaEspig/chronos/commit/d6a52ba565b49bde08a75356c430f467c3c21434))
+* **front:** implemented week selection ([998b580](https://github.com/jotaEspig/chronos/commit/998b580ef5f5e8e7f1b71b9fbc74f485d68a1d8c))
+* **front:** style changes ([ea3e5a7](https://github.com/jotaEspig/chronos/commit/ea3e5a798b6f4db3d4eb4c4f243e4fd99fc3a0f9))
+* **index.html:** add simple navbar with some bugs yet ([ff60099](https://github.com/jotaEspig/chronos/commit/ff60099491883d5c4cc0db0a097c3b8505de9a2a))
+* **jwt:** added JWTClaims ([e4ce347](https://github.com/jotaEspig/chronos/commit/e4ce3478c0457a6291e573416d8cb01be03c0a2a))
+* **login-frontend:** added stylization ([e100515](https://github.com/jotaEspig/chronos/commit/e100515039f29cedf6af56dce41c004900094482))
+* **login-frontend:** added stylization ([ba0ab67](https://github.com/jotaEspig/chronos/commit/ba0ab67e802e4b5a005f710580193ede1c266f53))
+* **login:** added login endpoint ([1170741](https://github.com/jotaEspig/chronos/commit/1170741e6fe234aa33cf6431c0db8b658ee0203f))
+* **logout.html:** add logout ([53953f2](https://github.com/jotaEspig/chronos/commit/53953f22da6640a4fbd9df675e0d3eaa1e9ff40d))
+* **route:** added middlewares field ([a150e70](https://github.com/jotaEspig/chronos/commit/a150e706b4c9063a6060f51543ad550c6d7a3f96))
+* **schedulingapi:** add authentication ([a99a062](https://github.com/jotaEspig/chronos/commit/a99a06295c3f9fabb216b84adcdf1c74e23a01a7))
+* **signup-frontend:** add stylization ([55f9df0](https://github.com/jotaEspig/chronos/commit/55f9df097c00748e5aadba2c46d636550d7ea48a))
+* **timeapi:** added authentication ([6423028](https://github.com/jotaEspig/chronos/commit/64230284ef522d608bb7cb08552b4347fd513faa))
+* **user:** added bcrypt operations ([b8ca8b8](https://github.com/jotaEspig/chronos/commit/b8ca8b857f93a47766c21d21b0a54f1d875f92ca))
+* **user:** added password field ([c70a36c](https://github.com/jotaEspig/chronos/commit/c70a36ccc1bba86f5934dd84e9dde2e40b1e9e04))
+* **user:** added type field ([75c11d2](https://github.com/jotaEspig/chronos/commit/75c11d24e2541651f3233d434242722c9282c7ba))
+* **userapi:** added authentication ([033a7c1](https://github.com/jotaEspig/chronos/commit/033a7c15d1c792285182fd0878ca1bda2c9ad9b4))
+* **utils.css:** add horizontal align class ([34ad629](https://github.com/jotaEspig/chronos/commit/34ad629bf6d151ce82400da60cbab218898ee9c0))
+* **utils.js:** add redirect function ([58715ee](https://github.com/jotaEspig/chronos/commit/58715eeec365908d1161ecffe547782be1c70cd6))
+
 # [1.1.0](https://github.com/jotaEspig/chronos/compare/v1.0.0...v1.1.0) (2023-10-11)
 
 
